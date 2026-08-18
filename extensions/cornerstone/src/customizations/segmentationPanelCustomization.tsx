@@ -3,6 +3,7 @@ import { CustomSegmentStatisticsHeader } from './CustomSegmentStatisticsHeader';
 import SegmentationToolConfig from '../components/SegmentationToolConfig';
 import React from 'react';
 import { SegmentationRepresentations } from '@cornerstonejs/tools/enums';
+import i18n from '@ohif/i18n';
 
 export default function getSegmentationPanelCustomization({ commandsManager, servicesManager }) {
   const { segmentationService } = servicesManager.services;
@@ -93,21 +94,21 @@ export default function getSegmentationPanelCustomization({ commandsManager, ser
     'panelSegmentation.tableMode': 'collapsed',
     'panelSegmentation.readableText': {
       // the values will appear in this order
-      min: 'Min Value',
-      minLPS: 'Min Coord',
-      max: 'Max Value',
-      maxLPS: 'Max Coord',
-      mean: 'Mean Value',
-      stdDev: 'Standard Deviation',
-      count: 'Voxel Count',
-      median: 'Median',
-      skewness: 'Skewness',
-      kurtosis: 'Kurtosis',
-      peakValue: 'Peak Value',
-      peakLPS: 'Peak Coord',
-      volume: 'Volume',
-      lesionGlycolysis: 'Lesion Glycolysis',
-      center: 'Center',
+      min: i18n.t('SegmentationPanel:Min Value'),
+      minLPS: i18n.t('SegmentationPanel:Min Coord'),
+      max: i18n.t('SegmentationPanel:Max Value'),
+      maxLPS: i18n.t('SegmentationPanel:Max Coord'),
+      mean: i18n.t('SegmentationPanel:Mean Value'),
+      stdDev: i18n.t('SegmentationPanel:Standard Deviation'),
+      count: i18n.t('SegmentationPanel:Voxel Count'),
+      median: i18n.t('SegmentationPanel:Median'),
+      skewness: i18n.t('SegmentationPanel:Skewness'),
+      kurtosis: i18n.t('SegmentationPanel:Kurtosis'),
+      peakValue: i18n.t('SegmentationPanel:Peak Value'),
+      peakLPS: i18n.t('SegmentationPanel:Peak Coord'),
+      volume: i18n.t('SegmentationPanel:Volume'),
+      lesionGlycolysis: i18n.t('SegmentationPanel:Lesion Glycolysis'),
+      center: i18n.t('SegmentationPanel:Center'),
     },
     'labelMapSegmentationToolbox.config': () => {
       return <SegmentationToolConfig />;

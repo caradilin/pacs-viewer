@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Input } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 /**
  * Props for the MultiLabelInput component
@@ -26,6 +28,25 @@ const MultiLabelInput: React.FC<MultiLabelInputProps> = ({
   labels = [],
   onLabelsChange,
 }) => {
+  const { i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translatePlaceholder = useCallback(() => {
+    return i18n.t(placeholder, { ns: 'USAnnotationPanel', defaultValue: placeholder });
+  }, [lang, placeholder]);
+
+  const translatedPlaceholder = translatePlaceholder();
+
   // State for the current input value
   const [inputValue, setInputValue] = useState<string>('');
   // Internal state for labels that syncs with the external labels prop
@@ -87,7 +108,7 @@ const MultiLabelInput: React.FC<MultiLabelInputProps> = ({
         value={inputValue}
         onChange={handleInputChange}
         onKeyPress={handleKeyPress}
-        placeholder={placeholder}
+        placeholder={translatedPlaceholder}
         className={className}
       />
       <div className="flex flex-wrap">

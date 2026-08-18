@@ -33,9 +33,9 @@ export default function getPanelModule({
     {
       name: 'measure',
       iconName: 'tab-linear',
-      iconLabel: 'Measure',
-      label: 'Measurements',
-      secondaryLabel: 'Measurements',
+      iconLabel: 'Buttons:Measure',
+      label: 'Buttons:Measurements',
+      secondaryLabel: 'Buttons:Measurements',
       component: wrappedMeasurementPanel,
     },
   ];

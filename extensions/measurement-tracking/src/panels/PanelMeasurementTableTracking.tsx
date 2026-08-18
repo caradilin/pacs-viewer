@@ -47,7 +47,7 @@ function PanelMeasurementTableTracking(props) {
   const EmptyComponent = () => (
     <div data-cy="trackedMeasurements-panel">
       <MeasurementTable
-        title="Measurements"
+        title="MeasurementTable:Tracked Measurements"
         isExpanded={false}
       >
         <MeasurementTable.Body />

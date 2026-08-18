@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Icons, PanelSection, Tooltip, TooltipContent, TooltipTrigger } from '../../index';
 import DataRow from '../DataRow/DataRow';
 import { createContext } from '../../lib/createContext';
+import i18n from '@ohif/i18n';
 
 interface MeasurementTableContext {
   data?: any[];
@@ -27,7 +28,46 @@ const MeasurementTable = ({
   children,
   disableEditing = false,
 }: MeasurementDataProps) => {
-  const { t } = useTranslation('MeasurementTable');
+  const { t, i18n: i18nextInstance } = useTranslation('MeasurementTable');
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateTitle = useCallback(
+    (text: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        // 优先使用 useTranslation 的 t('Namespace:key')，nsSeparator 默认 ':'
+        // keySeparator 已设为 false，不会误拆 key
+        const fullKey = `${ns}:${key}`;
+        const fromFullKey = i18nextInstance?.t?.(fullKey);
+        if (fromFullKey && fromFullKey !== fullKey) {
+          return fromFullKey;
+        }
+        // 再用 ns 参数形式查
+        const fromNs = i18nextInstance?.t?.(key, { ns, defaultValue: key });
+        if (fromNs && fromNs !== key) {
+          return fromNs;
+        }
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return t(text);
+    },
+    [lang, t, i18nextInstance]
+  );
+
+  const translatedTitle = translateTitle(title);
   const amount = data.length;
 
   return (
@@ -42,7 +82,7 @@ const MeasurementTable = ({
           key="measurementTableHeader"
           className="bg-popover"
         >
-          <span>{`${t(title)} (${amount})`}</span>
+          <span>{`${translatedTitle} (${amount})`}</span>
         </PanelSection.Header>
         <PanelSection.Content key="measurementTableContent">{children}</PanelSection.Content>
       </PanelSection>

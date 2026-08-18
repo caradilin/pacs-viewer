@@ -1,4 +1,10 @@
 {
   "Measurements": "Measurements",
-  "Studies": "Studies"
+  "Studies": "Studies",
+  "Measure": "Measure",
+  "Measurement": "Measurement",
+  "Segmentation": "Segmentation",
+  "4D Workflow": "4D Workflow",
+  "US Annotation": "US Annotation",
+  "Not available based on current context": "Not available based on current context"
 }

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import usePatientInfo from '../../hooks/usePatientInfo';
 import { Icons } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 
 export enum PatientInfoVisibility {
   VISIBLE = 'visible',
@@ -17,6 +18,7 @@ const formatWithEllipsis = (str, maxLength) => {
 };
 
 function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
+  const { t } = useTranslation('Header');
   const initialExpandedState =
     appConfig.showPatientInfo === PatientInfoVisibility.VISIBLE ||
     appConfig.showPatientInfo === PatientInfoVisibility.VISIBLE_READONLY;
@@ -62,7 +64,7 @@ function HeaderPatientInfo({ servicesManager, appConfig }: withAppTypes) {
           </>
         ) : (
           <div className="text-primary self-center text-[13px]">
-            {isMixedPatients ? 'Multiple Patients' : 'Patient'}
+            {isMixedPatients ? t('Multiple Patients') : t('Patient')}
           </div>
         )}
       </div>

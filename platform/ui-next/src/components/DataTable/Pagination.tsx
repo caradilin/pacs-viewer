@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../Button';
 import {
   DropdownMenu,
@@ -15,6 +16,7 @@ import { useDataTable } from './context';
  * Uses the TanStack table instance from DataTable context.
  */
 export function Pagination<TData>() {
+  const { t } = useTranslation(['DataTable', 'Common']);
   const { table } = useDataTable<TData>();
   const { pageIndex, pageSize } = table.getState().pagination ?? { pageIndex: 0, pageSize: 50 };
 
@@ -24,6 +26,10 @@ export function Pagination<TData>() {
 
   const canPrev = table.getCanPreviousPage();
   const canNext = table.getCanNextPage();
+  const rowsPerPageAria = t('DataTable:Rows per page', { defaultValue: 'Rows per page' });
+  const ofWord = t('DataTable:of', { defaultValue: 'of' });
+  const previousPageAria = t('DataTable:Previous page', { defaultValue: 'Previous page' });
+  const nextPageAria = t('DataTable:Next page', { defaultValue: 'Next page' });
 
   return (
     <div className="mr-2 flex items-center gap-0.5">
@@ -33,9 +39,10 @@ export function Pagination<TData>() {
             variant="ghost"
             size="sm"
             className="text-primary/80 px-2 text-sm leading-tight"
-            aria-label="Rows per page"
+            aria-label={rowsPerPageAria}
+            title={rowsPerPageAria}
           >
-            {`${start}-${end} of ${total}`}
+            {`${start}-${end} ${ofWord} ${total}`}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
@@ -49,7 +56,7 @@ export function Pagination<TData>() {
               className="flex items-center gap-[2px]"
             >
               <Icons.Checked className={`h-6 w-6 ${pageSize === size ? '' : 'invisible'}`} />
-              {size} per page
+              {t('DataTable:Size per page', { defaultValue: `${size} per page`, size })}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>
@@ -57,7 +64,8 @@ export function Pagination<TData>() {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Previous page"
+        aria-label={previousPageAria}
+        title={previousPageAria}
         onClick={() => table.previousPage()}
         disabled={!canPrev}
         className="ml-1"
@@ -67,7 +75,8 @@ export function Pagination<TData>() {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Next page"
+        aria-label={nextPageAria}
+        title={nextPageAria}
         onClick={() => table.nextPage()}
         disabled={!canNext}
       >

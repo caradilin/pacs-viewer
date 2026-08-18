@@ -1,5 +1,7 @@
 import classnames from 'classnames';
 import React, { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 import { Icons } from '../Icons';
 import { TooltipTrigger, TooltipContent, Tooltip } from '../Tooltip';
 import { Separator } from '../Separator';
@@ -158,12 +160,12 @@ const createStyleMap = (
   };
 };
 
-const getToolTipContent = (label: string, disabled: boolean) => {
+const getToolTipContent = (label: string, disabled: boolean, notAvailableText?: string) => {
   return (
     <>
       <div>{label}</div>
       {disabled && (
-        <div className="text-foreground">{'Not available based on current context'}</div>
+        <div className="text-foreground">{notAvailableText || 'Not available based on current context'}</div>
       )}
     </>
   );
@@ -196,8 +198,39 @@ const SidePanel = ({
   collapsedInsideBorderSize = 8,
   collapsedOutsideBorderSize = 4,
 }: SidePanelProps) => {
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
   const [panelOpen, setPanelOpen] = useState(isExpanded);
   const [activeTabIndex, setActiveTabIndex] = useState(activeTabIndexProp ?? 0);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateLabel = React.useCallback(
+    (label: string) => {
+      if (!label) {
+        return label;
+      }
+      if (label.includes(':')) {
+        const [ns, key] = label.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return label;
+    },
+    [lang]
+  );
+
+  const notAvailableText = i18n.t('Not available based on current context', {
+    ns: 'SidePanel',
+    defaultValue: 'Not available based on current context',
+  });
 
   const [styleMap, setStyleMap] = useState(
     createStyleMap(
@@ -330,7 +363,7 @@ const SidePanel = ({
                     side === 'left' ? 'justify-end' : 'justify-start'
                   )}
                 >
-                  {getToolTipContent(childComponent.label, childComponent.disabled)}
+                  {getToolTipContent(translateLabel(childComponent.label), childComponent.disabled, notAvailableText)}
                 </div>
               </TooltipContent>
             </Tooltip>
@@ -412,7 +445,7 @@ const SidePanel = ({
                       </div>
                     </TooltipTrigger>
                     <TooltipContent side="bottom">
-                      {getToolTipContent(tab.label, disabled)}
+                      {getToolTipContent(translateLabel(tab.label), disabled, notAvailableText)}
                     </TooltipContent>
                   </Tooltip>
                 </React.Fragment>
@@ -434,7 +467,7 @@ const SidePanel = ({
         onClick={() => updatePanelOpen(!panelOpen)}
       >
         {getCloseIcon()}
-        <span>{tabs[0].label}</span>
+        <span>{translateLabel(tabs[0].label)}</span>
       </div>
     );
   };

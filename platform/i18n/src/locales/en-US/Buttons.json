@@ -159,5 +159,15 @@
   "Shapes": "Shapes",
   "Create new segmentation to enable shapes tool.": "Create new segmentation to enable shapes tool.",
   "US Pleura B-line Annotation": "US Pleura B-line Annotation",
-  "Arrow Annotate Tool": "Arrow Annotate Tool"
+  "Arrow Annotate Tool": "Arrow Annotate Tool",
+  "Labelmap Edit with Contour Tool": "Labelmap Edit with Contour Tool",
+  "Simplify Contours": "Simplify Contours",
+  "Smooth Contours": "Smooth Contours",
+  "Combine Contours": "Combine Contours",
+  "Automatically fill in missing slices between drawn segments. Use brush or threshold tools on at least two slices, then click to interpolate across slices. Works in any direction. Volume must be reconstructable.": "Automatically fill in missing slices between drawn segments. Use brush or threshold tools on at least two slices, then click to interpolate across slices. Works in any direction. Volume must be reconstructable.",
+  "Automatically detects the largest length and width across slices for the selected segment and displays a bidirectional measurement.": "Automatically detects the largest length and width across slices for the selected segment and displays a bidirectional measurement.",
+  "Toggle AI assistance for segmenting nearby slices. After drawing on a slice, scroll to preview predictions. Press Enter to accept or Esc to skip.": "Toggle AI assistance for segmenting nearby slices. After drawing on a slice, scroll to preview predictions. Press Enter to accept or Esc to skip.",
+  "The current viewport cannot handle interpolation.": "The current viewport cannot handle interpolation.",
+  "Use include/exclude markers to guide AI (SAM) segmentation. Click to place markers, Enter to accept results, Esc to reject, and N to go to the next slice while keeping markers.": "Use include/exclude markers to guide AI (SAM) segmentation. Click to place markers, Enter to accept results, Esc to reject, and N to go to the next slice while keeping markers.",
+  "Selected viewport is not reconstructable": "Selected viewport is not reconstructable"
 }

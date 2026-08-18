@@ -1,6 +1,5 @@
 import type { Button } from '@ohif/core/types';
 import { ViewportGridService, ToolbarService } from '@ohif/core';
-import i18n from 'i18next';
 
 const { TOOLBAR_SECTIONS } = ToolbarService;
 
@@ -74,13 +73,13 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-freehand-roi',
-      label: i18n.t('Buttons:Freehand Segmentation'),
-      tooltip: i18n.t('Buttons:Freehand Segmentation'),
+      label: 'Buttons:Freehand Segmentation',
+      tooltip: 'Buttons:Freehand Segmentation',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['PlanarFreehandContourSegmentationTool'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -111,7 +110,7 @@ const segmentationToolbarButtons: Button[] = [
       ],
       options: [
         {
-          name: i18n.t('Buttons:Interpolate Contours'),
+          name: 'Buttons:Interpolate Contours',
           type: 'switch',
           id: 'planarFreehandInterpolateContours',
           value: false,
@@ -127,13 +126,13 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-livewire',
-      label: i18n.t('Buttons:Livewire Contour'),
-      tooltip: i18n.t('Buttons:Livewire Contour'),
+      label: 'Buttons:Livewire Contour',
+      tooltip: 'Buttons:Livewire Contour',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['LivewireContourSegmentationTool'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -164,7 +163,7 @@ const segmentationToolbarButtons: Button[] = [
       ],
       options: [
         {
-          name: i18n.t('Buttons:Interpolate Contours'),
+          name: 'Buttons:Interpolate Contours',
           type: 'switch',
           id: 'livewireInterpolateContours',
           value: false,
@@ -180,13 +179,13 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-spline-roi',
-      label: i18n.t('Buttons:Spline Contour Segmentation Tool'),
-      tooltip: i18n.t('Buttons:Spline Contour Segmentation Tool'),
+      label: 'Buttons:Spline Contour Segmentation Tool',
+      tooltip: 'Buttons:Spline Contour Segmentation Tool',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['CatmullRomSplineROI', 'LinearSplineROI', 'BSplineROI'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -203,7 +202,7 @@ const segmentationToolbarButtons: Button[] = [
       ],
       options: [
         {
-          name: i18n.t('Buttons:Spline Type'),
+          name: 'Buttons:Spline Type',
           type: 'select',
           id: 'splineTypeSelect',
           value: 'CatmullRomSplineROI',
@@ -211,14 +210,14 @@ const segmentationToolbarButtons: Button[] = [
             {
               id: 'CatmullRomSplineROI',
               value: 'CatmullRomSplineROI',
-              label: i18n.t('Buttons:Catmull Rom Spline'),
+              label: 'Buttons:Catmull Rom Spline',
             },
             {
               id: 'LinearSplineROI',
               value: 'LinearSplineROI',
-              label: i18n.t('Buttons:Linear Spline'),
+              label: 'Buttons:Linear Spline',
             },
-            { id: 'BSplineROI', value: 'BSplineROI', label: i18n.t('Buttons:B-Spline') },
+            { id: 'BSplineROI', value: 'BSplineROI', label: 'Buttons:B-Spline' },
           ],
           commands: {
             commandName: 'setToolActiveToolbar',
@@ -236,7 +235,7 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Simplified Spline'),
+          name: 'Buttons:Simplified Spline',
           type: 'switch',
           id: 'simplifiedSpline',
           value: true,
@@ -245,7 +244,7 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Interpolate Contours'),
+          name: 'Buttons:Interpolate Contours',
           type: 'switch',
           id: 'splineInterpolateContours',
           value: false,
@@ -264,13 +263,13 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-sculptor',
-      label: i18n.t('Buttons:Sculptor Tool'),
-      tooltip: i18n.t('Buttons:Sculptor Tool'),
+      label: 'Buttons:Sculptor Tool',
+      tooltip: 'Buttons:Sculptor Tool',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['SculptorTool'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -288,7 +287,7 @@ const segmentationToolbarButtons: Button[] = [
       ],
       options: [
         {
-          name: i18n.t('Buttons:Dynamic Cursor Size'),
+          name: 'Buttons:Dynamic Cursor Size',
           type: 'switch',
           id: 'dynamicCursorSize',
           value: true,
@@ -304,12 +303,12 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-brush',
-      label: i18n.t('Buttons:Brush'),
+      label: 'Buttons:Brush',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['CircularBrush', 'SphereBrush'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.segmentation.synchronizeDrawingRadius',
@@ -328,7 +327,7 @@ const segmentationToolbarButtons: Button[] = [
       },
       options: [
         {
-          name: i18n.t('Buttons:Radius (mm)'),
+          name: 'Buttons:Radius (mm)',
           id: 'brush-radius',
           type: 'range',
           explicitRunOnly: true,
@@ -344,13 +343,13 @@ const segmentationToolbarButtons: Button[] = [
           ],
         },
         {
-          name: i18n.t('Buttons:Shape'),
+          name: 'Buttons:Shape',
           type: 'radio',
           id: 'brush-mode',
           value: 'CircularBrush',
           values: [
-            { value: 'CircularBrush', label: i18n.t('Buttons:Circle') },
-            { value: 'SphereBrush', label: i18n.t('Buttons:Sphere') },
+            { value: 'CircularBrush', label: 'Buttons:Circle' },
+            { value: 'SphereBrush', label: 'Buttons:Sphere' },
           ],
           commands: ['setToolActiveToolbar'],
         },
@@ -362,10 +361,9 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolButton',
     props: {
       icon: 'actions-interpolate',
-      label: i18n.t('Buttons:Interpolate Labelmap'),
-      tooltip: i18n.t(
-        'Buttons:Automatically fill in missing slices between drawn segments. Use brush or threshold tools on at least two slices, then click to interpolate across slices. Works in any direction. Volume must be reconstructable.'
-      ),
+      label: 'Buttons:Interpolate Labelmap',
+      tooltip:
+        'Buttons:Automatically fill in missing slices between drawn segments. Use brush or threshold tools on at least two slices, then click to interpolate across slices. Works in any direction. Volume must be reconstructable.',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
@@ -376,7 +374,7 @@ const segmentationToolbarButtons: Button[] = [
         },
         {
           name: 'evaluate.displaySetIsReconstructable',
-          disabledText: i18n.t('Buttons:The current viewport cannot handle interpolation.'),
+          disabledText: 'Buttons:The current viewport cannot handle interpolation.',
         },
       ],
       commands: [
@@ -395,14 +393,13 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolButton',
     props: {
       icon: 'actions-bidirectional',
-      label: i18n.t('Buttons:Segment Bidirectional'),
-      tooltip: i18n.t(
-        'Buttons:Automatically detects the largest length and width across slices for the selected segment and displays a bidirectional measurement.'
-      ),
+      label: 'Buttons:Segment Bidirectional',
+      tooltip:
+        'Buttons:Automatically detects the largest length and width across slices for the selected segment and displays a bidirectional measurement.',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -425,20 +422,19 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-click-segment',
-      label: i18n.t('Buttons:Click to Segment'),
-      tooltip: i18n.t(
-        'Buttons:PET only. Click-to-segment lesions with no configuration. Hover for visual feedback—click when a plus sign appears to segment the lesion.'
-      ),
+      label: 'Buttons:Click to Segment',
+      tooltip:
+        'Buttons:PET only. Click-to-segment lesions with no configuration. Hover for visual feedback—click when a plus sign appears to segment the lesion.',
       evaluate: [
         {
           name: 'evaluate.modality.supported',
           supportedModalities: ['PT'],
-          disabledText: i18n.t('Buttons:Tool not available for this modality'),
+          disabledText: 'Buttons:Tool not available for this modality',
         },
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['ClickSegment'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable this tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -461,10 +457,9 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-labelmap-slice-propagation',
-      label: i18n.t('Buttons:Labelmap Assist'),
-      tooltip: i18n.t(
-        'Buttons:Toggle AI assistance for segmenting nearby slices. After drawing on a slice, scroll to preview predictions. Press Enter to accept or Esc to skip.'
-      ),
+      label: 'Buttons:Labelmap Assist',
+      tooltip:
+        'Buttons:Toggle AI assistance for segmenting nearby slices. After drawing on a slice, scroll to preview predictions. Press Enter to accept or Esc to skip.',
       evaluate: [
         'evaluate.cornerstoneTool.toggle',
         {
@@ -494,10 +489,9 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-marker-labelmap',
-      label: i18n.t('Buttons:Marker Guided Labelmap'),
-      tooltip: i18n.t(
-        'Buttons:Use include/exclude markers to guide AI (SAM) segmentation. Click to place markers, Enter to accept results, Esc to reject, and N to go to the next slice while keeping markers.'
-      ),
+      label: 'Buttons:Marker Guided Labelmap',
+      tooltip:
+        'Buttons:Use include/exclude markers to guide AI (SAM) segmentation. Click to place markers, Enter to accept results, Esc to reject, and N to go to the next slice while keeping markers.',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
@@ -523,13 +517,13 @@ const segmentationToolbarButtons: Button[] = [
       },
       options: [
         {
-          name: i18n.t('Buttons:Marker Mode'),
+          name: 'Buttons:Marker Mode',
           type: 'radio',
           id: 'marker-mode',
           value: 'markerInclude',
           values: [
-            { value: 'markerInclude', label: i18n.t('Buttons:Include') },
-            { value: 'markerExclude', label: i18n.t('Buttons:Exclude') },
+            { value: 'markerInclude', label: 'Buttons:Include' },
+            { value: 'markerExclude', label: 'Buttons:Exclude' },
           ],
           commands: ({ commandsManager, options }) => {
             const markerModeOption = options.find(option => option.id === 'marker-mode');
@@ -545,7 +539,7 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Clear Markers'),
+          name: 'Buttons:Clear Markers',
           type: 'button',
           id: 'clear-markers',
           commands: 'clearMarkersForMarkerLabelmap',
@@ -558,7 +552,7 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-eraser',
-      label: i18n.t('Buttons:Eraser'),
+      label: 'Buttons:Eraser',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
@@ -575,7 +569,7 @@ const segmentationToolbarButtons: Button[] = [
       ],
       options: [
         {
-          name: i18n.t('Buttons:Radius (mm)'),
+          name: 'Buttons:Radius (mm)',
           id: 'eraser-radius',
           type: 'range',
           explicitRunOnly: true,
@@ -589,13 +583,13 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Shape'),
+          name: 'Buttons:Shape',
           type: 'radio',
           id: 'eraser-mode',
           value: 'CircularEraser',
           values: [
-            { value: 'CircularEraser', label: i18n.t('Buttons:Circle') },
-            { value: 'SphereEraser', label: i18n.t('Buttons:Sphere') },
+            { value: 'CircularEraser', label: 'Buttons:Circle' },
+            { value: 'SphereEraser', label: 'Buttons:Sphere' },
           ],
           commands: 'setToolActiveToolbar',
         },
@@ -613,7 +607,7 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-threshold',
-      label: i18n.t('Buttons:Threshold Tool'),
+      label: 'Buttons:Threshold Tool',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
@@ -641,7 +635,7 @@ const segmentationToolbarButtons: Button[] = [
       },
       options: [
         {
-          name: i18n.t('Buttons:Radius (mm)'),
+          name: 'Buttons:Radius (mm)',
           id: 'threshold-radius',
           type: 'range',
           explicitRunOnly: true,
@@ -662,13 +656,13 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Shape'),
+          name: 'Buttons:Shape',
           type: 'radio',
           id: 'threshold-shape',
           value: 'ThresholdCircularBrush',
           values: [
-            { value: 'ThresholdCircularBrush', label: i18n.t('Buttons:Circle') },
-            { value: 'ThresholdSphereBrush', label: i18n.t('Buttons:Sphere') },
+            { value: 'ThresholdCircularBrush', label: 'Buttons:Circle' },
+            { value: 'ThresholdSphereBrush', label: 'Buttons:Sphere' },
           ],
           commands: ({ value, commandsManager, options }) => {
             const optionsDynamic = options.find(option => option.id === 'dynamic-mode');
@@ -688,13 +682,13 @@ const segmentationToolbarButtons: Button[] = [
           },
         },
         {
-          name: i18n.t('Buttons:Threshold'),
+          name: 'Buttons:Threshold',
           type: 'radio',
           id: 'dynamic-mode',
           value: 'ThresholdDynamic',
           values: [
-            { value: 'ThresholdDynamic', label: i18n.t('Buttons:Dynamic') },
-            { value: 'ThresholdRange', label: i18n.t('Buttons:Range') },
+            { value: 'ThresholdDynamic', label: 'Buttons:Dynamic' },
+            { value: 'ThresholdRange', label: 'Buttons:Range' },
           ],
           commands: ({ value, commandsManager, options }) => {
             const thresholdRangeOption = options.find(option => option.id === 'threshold-shape');
@@ -747,12 +741,12 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'icon-tool-shape',
-      label: i18n.t('Buttons:Shapes'),
+      label: 'Buttons:Shapes',
       evaluate: [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['CircleScissor', 'SphereScissor', 'RectangleScissor'],
-          disabledText: i18n.t('Buttons:Create new segmentation to enable shapes tool.'),
+          disabledText: 'Buttons:Create new segmentation to enable shapes tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',
@@ -767,14 +761,14 @@ const segmentationToolbarButtons: Button[] = [
       },
       options: [
         {
-          name: i18n.t('Buttons:Shape'),
+          name: 'Buttons:Shape',
           type: 'radio',
           value: 'CircleScissor',
           id: 'shape-mode',
           values: [
-            { value: 'CircleScissor', label: i18n.t('Buttons:Circle') },
-            { value: 'SphereScissor', label: i18n.t('Buttons:Sphere') },
-            { value: 'RectangleScissor', label: i18n.t('Buttons:Rectangle') },
+            { value: 'CircleScissor', label: 'Buttons:Circle' },
+            { value: 'SphereScissor', label: 'Buttons:Sphere' },
+            { value: 'RectangleScissor', label: 'Buttons:Rectangle' },
           ],
           commands: 'setToolActiveToolbar',
         },
@@ -786,8 +780,8 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolButton',
     props: {
       icon: 'actions-simplify',
-      label: 'Simplify Contours',
-      tooltip: 'Simplify Contours',
+      label: 'Buttons:Simplify Contours',
+      tooltip: 'Buttons:Simplify Contours',
       commands: ['toggleActiveSegmentationUtility'],
       evaluate: [
         {
@@ -802,8 +796,8 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolButton',
     props: {
       icon: 'actions-smooth',
-      label: 'Smooth Contours',
-      tooltip: 'Smooth Contours',
+      label: 'Buttons:Smooth Contours',
+      tooltip: 'Buttons:Smooth Contours',
       commands: ['toggleActiveSegmentationUtility'],
       evaluate: [
         {
@@ -818,8 +812,8 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolButton',
     props: {
       icon: 'actions-combine',
-      label: 'Combine Contours',
-      tooltip: 'Combine Contours',
+      label: 'Buttons:Combine Contours',
+      tooltip: 'Buttons:Combine Contours',
       commands: ['toggleActiveSegmentationUtility'],
       evaluate: [
         {
@@ -834,8 +828,8 @@ const segmentationToolbarButtons: Button[] = [
     uiType: 'ohif.toolBoxButton',
     props: {
       icon: 'tool-labelmap-edit-with-contour',
-      label: i18n.t('Buttons:Labelmap Edit with Contour Tool'),
-      tooltip: i18n.t('Buttons:Labelmap Edit with Contour Tool'),
+      label: 'Buttons:Labelmap Edit with Contour Tool',
+      tooltip: 'Buttons:Labelmap Edit with Contour Tool',
       commands: [
         'setToolActiveToolbar',
         {
@@ -847,7 +841,7 @@ const segmentationToolbarButtons: Button[] = [
         {
           name: 'evaluate.cornerstone.segmentation',
           toolNames: ['LabelMapEditWithContour'],
-          disabledText: 'Create new segmentation to enable this tool.',
+          disabledText: 'Buttons:Create new segmentation to enable this tool.',
         },
         {
           name: 'evaluate.cornerstone.hasSegmentationOfType',

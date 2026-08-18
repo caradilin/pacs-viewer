@@ -178,7 +178,19 @@ interface HotkeyProps {
 
 function Hotkey({ label, placeholder, className, value, onChange, hotkeys }: HotkeyProps) {
   const [isRecording, setIsRecording] = React.useState(false);
-  const { t } = useTranslation('UserPreferencesModal');
+  const { t, i18n: i18nextInstance } = useTranslation('UserPreferencesModal');
+
+  const translatedLabel = React.useMemo(() => {
+    if (!label) {
+      return label;
+    }
+    if (label.includes(':')) {
+      const [ns, key] = label.split(':');
+      return i18nextInstance.t(key, { ns, defaultValue: key });
+    }
+    return label;
+  }, [label, i18nextInstance]);
+
   const translatedValue = React.useMemo(() => translateHotkeyValue(value, t), [value, t]);
   const translatedPlaceholder = React.useMemo(
     () => translateHotkeyValue(placeholder, t),
@@ -208,7 +220,7 @@ function Hotkey({ label, placeholder, className, value, onChange, hotkeys }: Hot
 
   return (
     <div className={cn('flex items-start justify-between gap-2', className)}>
-      <Label className="flex-1 whitespace-normal break-words text-sm">{label}</Label>
+      <Label className="flex-1 whitespace-normal break-words text-sm">{translatedLabel}</Label>
       <Input
         className={cn(
           'w-16 text-center transition-colors',

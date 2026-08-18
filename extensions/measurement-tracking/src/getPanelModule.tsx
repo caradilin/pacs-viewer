@@ -1,6 +1,5 @@
 import { Types } from '@ohif/core';
 import { PanelMeasurementTableTracking, PanelStudyBrowserTracking } from './panels';
-import i18n from 'i18next';
 import React from 'react';
 
 // TODO:
@@ -13,15 +12,15 @@ function getPanelModule({ commandsManager, extensionManager, servicesManager }):
     {
       name: 'seriesList',
       iconName: 'tab-studies',
-      iconLabel: 'Studies',
-      label: i18n.t('SidePanel:Studies'),
+      iconLabel: 'SidePanel:Studies',
+      label: 'SidePanel:Studies',
       component: props => <PanelStudyBrowserTracking {...props} />,
     },
     {
       name: 'trackedMeasurements',
       iconName: 'tab-linear',
-      iconLabel: 'Measure',
-      label: i18n.t('SidePanel:Measurements'),
+      iconLabel: 'SidePanel:Measure',
+      label: 'SidePanel:Measurements',
       component: props => (
         <PanelMeasurementTableTracking
           {...props}

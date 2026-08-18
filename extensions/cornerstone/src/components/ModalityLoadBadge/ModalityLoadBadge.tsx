@@ -38,7 +38,7 @@ function ModalityLoadBadge({ viewportId }: { viewportId: string }) {
         isHydrated: true,
         isTracked,
         displaySet: null,
-        tooltip: 'Currently tracking measurements in this viewport',
+        tooltip: t('Currently tracking measurements in this viewport'),
       };
     }
 
@@ -55,20 +55,21 @@ function ModalityLoadBadge({ viewportId }: { viewportId: string }) {
 
     if (type === 'SEG') {
       tooltip = isHydrated
-        ? 'This Segmentation is loaded in the segmentation panel'
-        : 'Click LOAD to load segmentation.';
+        ? t('This Segmentation is loaded in the segmentation panel')
+        : t('Click LOAD to load segmentation.');
     } else if (type === 'RTSTRUCT') {
       tooltip = isHydrated
-        ? 'This RTSTRUCT is loaded in the segmentation panel'
-        : 'Click LOAD to load RTSTRUCT.';
+        ? t('This RTSTRUCT is loaded in the segmentation panel')
+        : t('Click LOAD to load RTSTRUCT.');
     } else if (type === 'SR') {
       if (!isRehydratable) {
-        tooltip = 'This structured report is not compatible with this application.';
+        tooltip = t('This structured report is not compatible with this application.');
       } else if (isRehydratable && isLocked) {
-        tooltip =
-          'This structured report is currently read-only because you are tracking measurements in another viewport.';
+        tooltip = t(
+          'This structured report is currently read-only because you are tracking measurements in another viewport.'
+        );
       } else {
-        tooltip = `Click ${loadStr} to restore measurements.`;
+        tooltip = t('Click {{loadStr}} to restore measurements.', { loadStr });
       }
     }
 

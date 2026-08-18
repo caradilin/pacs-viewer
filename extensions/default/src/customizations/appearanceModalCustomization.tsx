@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   AppearanceModal,
   Select,
@@ -11,11 +11,30 @@ import {
   themePresets,
 } from '@ohif/ui-next';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 function AppearanceModalDefault() {
   const { activeTheme, setActiveTheme, customCss, applyCustomTheme, clearCustomTheme } =
     useActiveTheme();
-  const { t } = useTranslation('AppearanceModal');
+  const { t: defaultT, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const t = useCallback(
+    (key: string, defaultValue?: string) => {
+      return i18n.t(key, { ns: 'AppearanceModal', defaultValue: defaultValue || key });
+    },
+    [lang]
+  );
 
   const [draftCss, setDraftCss] = React.useState(() => customCss);
   const [isCustomOpen, setIsCustomOpen] = React.useState(() => activeTheme === 'custom');
@@ -55,6 +74,20 @@ function AppearanceModalDefault() {
     setParseFailed(false);
   };
 
+  const getThemeLabel = useCallback((themeName: string) => {
+    if (themeName === 'default') {
+      return t('Default Theme');
+    }
+    if (themeName === 'custom') {
+      return t('Custom');
+    }
+    const preset = themePresets.find(p => p.name === themeName);
+    if (preset) {
+      return t(preset.label);
+    }
+    return themeName;
+  }, [t]);
+
   return (
     <AppearanceModal>
       <AppearanceModal.Body>
@@ -69,7 +102,7 @@ function AppearanceModalDefault() {
                 className="w-[200px]"
                 aria-label={t('Theme')}
               >
-                <SelectValue />
+                <SelectValue>{getThemeLabel(activeTheme)}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="default">{t('Default Theme')}</SelectItem>
@@ -78,7 +111,7 @@ function AppearanceModalDefault() {
                     key={preset.name}
                     value={preset.name}
                   >
-                    {preset.label}
+                    {t(preset.label)}
                   </SelectItem>
                 ))}
                 {(customCss || draftCss) && <SelectItem value="custom">{t('Custom')}</SelectItem>}

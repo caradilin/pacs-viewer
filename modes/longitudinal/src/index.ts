@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import { id } from './id';
 import {
   initToolGroups,
@@ -61,7 +60,7 @@ export const modeInstance = {
   // We should not be.
   id,
   routeName: 'viewer',
-  displayName: i18n.t('Modes:Basic Viewer'),
+  displayName: 'Basic Viewer',
   routes: [longitudinalRoute],
   extensions: extensionDependencies,
 };

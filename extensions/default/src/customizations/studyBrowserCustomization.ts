@@ -7,26 +7,26 @@ export default {
   'studyBrowser.thumbnailMenuItems': [
     {
       id: 'tagBrowser',
-      label: i18n.t('StudyBrowser:Tag Browser'),
+      label: 'StudyBrowser:Tag Browser',
       iconName: 'DicomTagBrowser',
       commands: 'openDICOMTagViewer',
     },
     {
       id: 'addAsLayer',
-      label: i18n.t('StudyBrowser:Add as Layer'),
+      label: 'StudyBrowser:Add as Layer',
       iconName: 'ViewportViews',
       commands: 'addDisplaySetAsLayer',
     },
   ],
   'studyBrowser.sortFunctions': [
     {
-      label: i18n.t('StudyBrowser:Series Number'),
+      label: 'StudyBrowser:Series Number',
       sortFunction: (a, b) => {
         return a?.SeriesNumber - b?.SeriesNumber;
       },
     },
     {
-      label: i18n.t('StudyBrowser:Series Date'),
+      label: 'StudyBrowser:Series Date',
       sortFunction: (a, b) => {
         const dateA = new Date(formatDate(a?.SeriesDate));
         const dateB = new Date(formatDate(b?.SeriesDate));

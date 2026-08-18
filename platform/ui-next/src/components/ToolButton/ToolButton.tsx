@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../Tooltip';
 import { Icons } from '../Icons';
 import { Button } from '../Button';
 import { cn } from '../../lib/utils';
 import { useIconPresentation } from '../../contextProviders/IconPresentationProvider';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 const baseClasses = '!rounded-lg inline-flex items-center justify-center';
 const defaultClasses = 'bg-transparent text-foreground/80 hover:bg-background hover:text-highlight';
@@ -60,6 +62,33 @@ function ToolButton(props: ToolButtonProps) {
     children,
   } = props;
 
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    (text: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return text;
+    },
+    [lang]
+  );
+
   const { className: iconClassName } = useIconPresentation();
   const { buttonSizeClass, iconSizeClass } = sizeClasses[size] || sizeClasses.default;
 
@@ -70,9 +99,13 @@ function ToolButton(props: ToolButtonProps) {
     className
   );
 
-  const defaultTooltip = label;
-  const disabledTooltip = disabled && disabledText ? disabledText : null;
-  const hasSecondaryTooltip = tooltip || disabledTooltip;
+  const translatedLabel = translateText(label);
+  const translatedTooltip = translateText(tooltip);
+  const translatedDisabledText = translateText(disabledText);
+
+  const defaultTooltip = translatedLabel;
+  const disabledTooltip = disabled && translatedDisabledText ? translatedDisabledText : null;
+  const hasSecondaryTooltip = translatedTooltip || disabledTooltip;
 
   const showTooltip = hasSecondaryTooltip || defaultTooltip;
 
@@ -122,7 +155,7 @@ function ToolButton(props: ToolButtonProps) {
             {disabledTooltip ? (
               <div className="text-muted-foreground text-xs">{disabledTooltip}</div>
             ) : (
-              tooltip && <div className="text-muted-foreground text-xs">{tooltip}</div>
+              translatedTooltip && <div className="text-muted-foreground text-xs">{translatedTooltip}</div>
             )}
           </div>
         )}

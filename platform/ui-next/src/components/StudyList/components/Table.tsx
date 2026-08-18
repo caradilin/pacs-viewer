@@ -1,5 +1,6 @@
 import React, { type ReactNode, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 import { DataTable, useDataTable } from '../../DataTable';
 import type { DataTableProps } from '../../DataTable/DataTable';
 import { Button } from '../../Button';
@@ -87,6 +88,31 @@ export function Table({
   );
 }
 
+function LanguageToggleButton() {
+  const { t, i18n: i18nextInstance } = useTranslation(['Header', 'Common']);
+  const currentLng = i18nextInstance.language;
+  const isZh = currentLng && currentLng.startsWith('zh');
+  const nextLng = isZh ? 'en-US' : 'zh';
+  const label = isZh ? 'EN' : '中';
+
+  const handleClick = () => {
+    i18n.changeLanguage(nextLng);
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="gap-1 text-sm font-medium"
+      onClick={handleClick}
+      aria-label={t('Header:Toggle language', { defaultValue: 'Toggle language' })}
+      title={t('Header:Toggle language', { defaultValue: 'Toggle language' })}
+    >
+      {label}
+    </Button>
+  );
+}
+
 function TableContent({
   title,
   showColumnVisibility,
@@ -132,6 +158,7 @@ function TableContent({
             {/* Pagination appears to the left of the "View" button */}
             <DataTable.Pagination<StudyRow> />
             {showColumnVisibility && <DataTable.ViewOptions<StudyRow> />}
+            <LanguageToggleButton />
             {toolbarRightComponent}
           </div>
         </DataTable.Toolbar>
@@ -142,15 +169,18 @@ function TableContent({
           excludeColumnIds={[COLUMN_IDS.INSTANCES]}
           renderFilterCell={({ columnId, value, setValue }) => {
             if (columnId === COLUMN_IDS.ACTIONS) {
+              const resetLabel = t('Reset', { defaultValue: 'Reset' });
+              const resetFiltersAria = t('Common:Reset filters', { defaultValue: 'Reset filters' });
               return (
                 <div className="text-right">
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => table.setColumnFilters([])}
-                    aria-label="Reset filters"
+                    aria-label={resetFiltersAria}
+                    title={resetFiltersAria}
                   >
-                    Reset
+                    {resetLabel}
                   </Button>
                 </div>
               );

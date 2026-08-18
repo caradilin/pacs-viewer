@@ -457,7 +457,7 @@ function LegacyWorkList({
                       dataCY={`mode-${mode.routeName}-${studyInstanceUid}`}
                       className={!isValidMode && 'bg-[#222d44]'}
                     >
-                      {mode.displayName}
+                      {t(`Modes:${mode.displayName}`, { defaultValue: mode.displayName })}
                     </Button>
                   </Link>
                 )

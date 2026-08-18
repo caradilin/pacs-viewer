@@ -1,0 +1,20 @@
+{
+  "Controls": "Controls",
+  "View": "VIEW",
+  "Computed": "Computed",
+  "4D Controls": "4D CONTROLS",
+  "Select the view mode, 4D to view the dynamic volume or Computed to view the computed volume": "Select the view mode, 4D to view the dynamic volume or Computed to view the computed volume",
+  "Computed Operation": "COMPUTED OPERATION",
+  "Operation Buttons (SUM, AVERAGE, SUBTRACT): Select the mathematical operation to be applied to the data set.": "Operation Buttons (SUM, AVERAGE, SUBTRACT): Select the mathematical operation to be applied to the data set.",
+  "Range Slider: Choose the numeric range of dimension groups within which the operation will be performed.": "Range Slider: Choose the numeric range of dimension groups within which the operation will be performed.",
+  "Generate Button: Execute the chosen operation on the specified range of data.": "Generate Button: Execute the chosen operation on the specified range of data.",
+  "SUM": "SUM",
+  "AVERAGE": "AVERAGE",
+  "SUBTRACT": "SUBTRACT",
+  "Generate": "Generate",
+  "Play/Pause Button: Begin or pause the animation of the 4D visualization.": "Play/Pause Button: Begin or pause the animation of the 4D visualization.",
+  "Dimension Group Selector: Navigate through individual dimension groups of the 4D data.": "Dimension Group Selector: Navigate through individual dimension groups of the 4D data.",
+  "FPS (Frames Per Second) Selector: Adjust the playback speed of the animation.": "FPS (Frames Per Second) Selector: Adjust the playback speed of the animation.",
+  "Frame": "Frame",
+  "FPS": "FPS"
+}

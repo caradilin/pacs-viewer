@@ -1,0 +1,14 @@
+{
+  "No results.": "无结果。",
+  "Not enough room to display this column": "空间不足，无法显示此列",
+  "View": "视图",
+  "of": "/ 共",
+  "Rows per page": "每页条数",
+  "Size per page": "{{size}} 条/页",
+  "Previous page": "上一页",
+  "Next page": "下一页",
+  "Reset filters": "重置筛选条件",
+  "Filter Modalities": "筛选成像设备",
+  "Start": "开始",
+  "End": "结束"
+}

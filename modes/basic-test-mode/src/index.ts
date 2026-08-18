@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 import { ToolbarService } from '@ohif/core';
 import {
   isValidMode,
@@ -198,7 +197,7 @@ export const modeInstance = {
   ...basicModeInstance,
   id,
   routeName: 'basic-test',
-  displayName: i18n.t('Modes:Basic Test Mode'),
+  displayName: 'Basic Test Mode',
   // Literal toolbar values instead of the basic mode's customization names.
   toolbarButtons,
   toolbarSections,

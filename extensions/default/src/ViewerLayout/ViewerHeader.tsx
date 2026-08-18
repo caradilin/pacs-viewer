@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 import { Button, Header, Icons, useModal } from '@ohif/ui-next';
 import { useSystem } from '@ohif/core';
@@ -9,6 +10,31 @@ import HeaderPatientInfo from './HeaderPatientInfo';
 import { PatientInfoVisibility } from './HeaderPatientInfo/HeaderPatientInfo';
 import { preserveQueryParameters } from '@ohif/app';
 import { Types } from '@ohif/core';
+
+function LanguageToggleButton() {
+  const { t, i18n: i18nextInstance } = useTranslation(['Header', 'Common']);
+  const currentLng = i18nextInstance.language;
+  const isZh = currentLng && currentLng.startsWith('zh');
+  const nextLng = isZh ? 'en-US' : 'zh';
+  const label = isZh ? 'EN' : '中';
+
+  const handleClick = () => {
+    i18n.changeLanguage(nextLng);
+  };
+
+  return (
+    <Button
+      variant="ghost"
+      size="sm"
+      className="gap-1 text-sm font-medium"
+      onClick={handleClick}
+      aria-label={t('Header:Toggle language', { defaultValue: 'Toggle language' })}
+      title={t('Header:Toggle language', { defaultValue: 'Toggle language' })}
+    >
+      {label}
+    </Button>
+  );
+}
 
 function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }>) {
   const { servicesManager, extensionManager, commandsManager } = useSystem();
@@ -114,7 +140,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
         )
       }
       UndoRedo={
-        <div className="text-primary flex cursor-pointer items-center">
+        <div className="text-primary flex cursor-pointer items-center gap-1">
           <Button
             variant="ghost"
             className="hover:bg-muted"
@@ -135,6 +161,7 @@ function ViewerHeader({ appConfig }: withAppTypes<{ appConfig: AppTypes.Config }
           >
             <Icons.Redo className="" />
           </Button>
+          <LanguageToggleButton />
         </div>
       }
     >

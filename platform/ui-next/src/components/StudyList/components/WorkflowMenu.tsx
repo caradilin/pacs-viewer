@@ -9,6 +9,7 @@ import {
 } from '../../DropdownMenu';
 import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from '../../Tooltip';
 import { useWorkflows } from './WorkflowsProvider';
+import { useTranslation } from 'react-i18next';
 import type { StudyRow } from '../types/types';
 
 type Props = {
@@ -20,6 +21,7 @@ export function WorkflowMenu({ studyRow, align = 'end' }: Props) {
   const [open, setOpen] = React.useState(false);
   const { getWorkflowsForStudy } = useWorkflows();
   const workflows = getWorkflowsForStudy(studyRow);
+  const { t } = useTranslation('StudyList');
 
   return (
     <DropdownMenu
@@ -35,14 +37,14 @@ export function WorkflowMenu({ studyRow, align = 'end' }: Props) {
                 variant="ghost"
                 aria-expanded={open}
                 aria-haspopup="menu"
-                aria-label="Action Menu"
+                aria-label={t('Action Menu')}
                 className="bg-primary/20 text-primary hover:bg-primary/30 mt-1 h-6 w-6 transition-opacity"
               >
                 <Icons.More className="h-6 w-6" />
               </Button>
             </DropdownMenuTrigger>
           </TooltipTrigger>
-          <TooltipContent side="bottom">Action Menu</TooltipContent>
+          <TooltipContent side="bottom">{t('Action Menu')}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
       <DropdownMenuContent
@@ -50,7 +52,7 @@ export function WorkflowMenu({ studyRow, align = 'end' }: Props) {
         onClick={e => e.stopPropagation()}
       >
         <div className="text-muted-foreground border-input my-1.5 mx-1 border-b py-1 pl-1 pr-4 text-sm">
-          Launch Workflow:
+          {t('Launch Workflow')}:
         </div>
         {workflows.map(workflow => (
           <DropdownMenuItem

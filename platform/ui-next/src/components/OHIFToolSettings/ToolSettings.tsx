@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import RowInputRange from './RowInputRange';
 import RowSegmentedControl from './RowSegmentedControl';
 import RowDoubleRange from './RowDoubleRange';
@@ -8,6 +8,8 @@ import { Label } from '../Label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../Select';
 import { Switch } from '../Switch';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 const SETTING_TYPES = {
   RANGE: 'range',
@@ -21,6 +23,69 @@ const SETTING_TYPES = {
 };
 
 function ToolSettings({ options }) {
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    text => {
+      if (!text || typeof text !== 'string') {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        const fullKey = `${ns}:${key}`;
+        const fromHook = t(fullKey);
+        if (fromHook && fromHook !== fullKey) {
+          return fromHook;
+        }
+        const fromNs = i18nextInstance?.t?.(key, { ns, defaultValue: key });
+        if (fromNs && fromNs !== key) {
+          return fromNs;
+        }
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      const fromHook = t(text);
+      if (fromHook && fromHook !== text) {
+        return fromHook;
+      }
+      return text;
+    },
+    [lang, t, i18nextInstance]
+  );
+
+  const translateOption = useCallback(
+    option => {
+      if (!option) {
+        return option;
+      }
+      const translated = { ...option };
+      if (translated.name) {
+        translated.name = translateText(translated.name);
+      }
+      if (translated.tooltip) {
+        translated.tooltip = translateText(translated.tooltip);
+      }
+      if (translated.values && Array.isArray(translated.values)) {
+        translated.values = translated.values.map(value => ({
+          ...value,
+          label: translateText(value.label),
+        }));
+      }
+      return translated;
+    },
+    [translateText]
+  );
+
   if (!options) {
     return null;
   }
@@ -30,10 +95,15 @@ function ToolSettings({ options }) {
     return <OptionsComponent />;
   }
 
+  const translatedOptions = useMemo(
+    () => options.map(translateOption),
+    [options, translateOption]
+  );
+
   return (
     <div className="text-foreground space-y-2 pb-4">
-      {options?.map(option => {
-        if (option.condition && option.condition?.({ options }) === false) {
+      {translatedOptions?.map(option => {
+        if (option.condition && option.condition?.({ options: translatedOptions }) === false) {
           return null;
         }
 

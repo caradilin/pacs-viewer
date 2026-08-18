@@ -1,9 +1,9 @@
-import i18n from 'i18next';
 import { id } from './id';
 import initToolGroups from './initToolGroups';
 import toolbarButtons from './toolbarButtons';
 import { UltrasoundPleuraBLineTool } from '@cornerstonejs/tools';
 import { showPercentage } from '../../../extensions/usAnnotation/src/PleuraBlinePercentage';
+import i18n from '@ohif/i18n';
 
 const ohif = {
   layout: '@ohif/extension-default.layoutTemplateModule.viewerLayout',
@@ -80,7 +80,7 @@ function modeFactory({ modeConfiguration }) {
     // We should not be.
     id,
     routeName: 'usAnnotation',
-    displayName: i18n.t('US Pleura B-line Annotations'),
+    displayName: 'US Pleura B-line Annotations',
     /**
      * Lifecycle hooks
      */
@@ -189,27 +189,27 @@ function modeFactory({ modeConfiguration }) {
           $push: [
             {
               commandName: 'switchUSAnnotationToPleuraLine',
-              label: 'Add new pleura line',
+              label: 'USAnnotationPanel:Add new pleura line',
               keys: ['W'],
             },
             {
               commandName: 'switchUSAnnotationToBLine',
-              label: 'Add new B-line',
+              label: 'USAnnotationPanel:Add new B-line',
               keys: ['S'],
             },
             {
               commandName: 'deleteLastPleuraAnnotation',
-              label: 'Delete last pleura line',
+              label: 'USAnnotationPanel:Delete last pleura line',
               keys: ['E'],
             },
             {
               commandName: 'deleteLastBLineAnnotation',
-              label: 'Delete last B-line',
+              label: 'USAnnotationPanel:Delete last B-line',
               keys: ['D'],
             },
             {
               commandName: 'toggleDisplayFanAnnotation',
-              label: 'Toggle overlay',
+              label: 'USAnnotationPanel:Toggle overlay',
               keys: ['O'],
             },
           ],
@@ -223,7 +223,7 @@ function modeFactory({ modeConfiguration }) {
               selector: ({ nearbyToolData }) => !!nearbyToolData,
               items: [
                 {
-                  label: 'Delete annotation',
+                  label: 'USAnnotationPanel:Delete annotation',
                   commands: 'removeMeasurement',
                 },
               ],
@@ -244,7 +244,7 @@ function modeFactory({ modeConfiguration }) {
               const activeViewportId = viewportGridService.getActiveViewportId();
               const toolGroup = toolGroupService.getToolGroupForViewport(activeViewportId);
               if (!toolGroup) {
-                return 'B-Line/Pleura : N/A';
+                return i18n.t('B-Line/Pleura : N/A', { ns: 'USAnnotationPanel' });
               }
               const usAnnotation = toolGroup.getToolInstance(UltrasoundPleuraBLineTool.toolName);
               if (usAnnotation) {
@@ -252,12 +252,15 @@ function modeFactory({ modeConfiguration }) {
                   cornerstoneViewportService.getCornerstoneViewport(activeViewportId);
                 const percentage = usAnnotation.calculateBLinePleuraPercentage(viewport);
                 if (percentage !== undefined) {
-                  return `B-Line/Pleura : ${percentage.toFixed(2)} %`;
+                  return i18n.t('B-Line/Pleura : {{percentage}} %', {
+                    ns: 'USAnnotationPanel',
+                    percentage: percentage.toFixed(2),
+                  });
                 } else {
-                  return 'B-Line/Pleura : N/A';
+                  return i18n.t('B-Line/Pleura : N/A', { ns: 'USAnnotationPanel' });
                 }
               }
-              return 'B-Line/Pleura : N/A';
+              return i18n.t('B-Line/Pleura : N/A', { ns: 'USAnnotationPanel' });
             },
           },
         ],
@@ -296,7 +299,7 @@ function modeFactory({ modeConfiguration }) {
 
       return {
         valid: modalities_list.includes('US'),
-        description: 'Pleura b-lines annotation mode when the study involves US modality series',
+        description: 'USAnnotationPanel:Pleura b-lines annotation mode when the study involves US modality series',
       };
     },
     routes: [

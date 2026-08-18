@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { useAppConfig } from '@state';
 import type { RunInput } from '@ohif/core/src/classes/CommandsManager';
@@ -36,6 +37,7 @@ export default function WorkList({
   extensionManager,
   commandsManager,
 }: Props) {
+  const { t } = useTranslation(['StudyList', 'Common']);
   const [appConfig] = useAppConfig();
   const { customizationService } = servicesManager.services;
   const LoadingIndicatorProgress = customizationService.getCustomization(
@@ -158,7 +160,7 @@ export default function WorkList({
                   <div className="h-8 w-8" />
                 )
               }
-              title={'Study List'}
+              title={t('StudyList:Study List', { defaultValue: 'Study List' })}
               onStudyDoubleClick={studyDoubleClickCommand ? onStudyDoubleClick : undefined}
               onSelectionChange={sel => setSelected((sel as StudyRow[])[0] ?? null)}
               toolbarLeftComponent={logoComponent}

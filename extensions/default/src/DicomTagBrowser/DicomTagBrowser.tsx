@@ -1,6 +1,7 @@
 import dcmjs from 'dcmjs';
 import moment from 'moment';
 import React, { useState, useMemo, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { classes, Types } from '@ohif/core';
 import { InputFilter } from '@ohif/ui-next';
 import {
@@ -42,6 +43,7 @@ const DicomTagBrowser = ({
   displaySets: Types.DisplaySet[];
   displaySetInstanceUID: string;
 }) => {
+  const { t } = useTranslation('DicomTagBrowser');
   const [selectedDisplaySetInstanceUID, setSelectedDisplaySetInstanceUID] =
     useState(displaySetInstanceUID);
   const [instanceNumber, setInstanceNumber] = useState(1);
@@ -136,7 +138,7 @@ const DicomTagBrowser = ({
         <div className="flex w-full flex-row items-start gap-6">
           <div className="flex w-1/3 flex-col">
             <span className="text-muted-foreground flex h-6 items-center pb-2 text-base">
-              Series
+              {t('Series')}
             </span>
             <Select
               value={selectedDisplaySetInstanceUID}
@@ -145,7 +147,7 @@ const DicomTagBrowser = ({
               <SelectTrigger data-cy="dicom-tag-series-select-trigger">
                 <SelectValue data-cy="dicom-tag-series-select-value">
                   {displaySetList.find(ds => ds.value === selectedDisplaySetInstanceUID)?.label ||
-                    'Select Series'}
+                    t('Select Series')}
                 </SelectValue>
               </SelectTrigger>
               <SelectContent>
@@ -166,7 +168,7 @@ const DicomTagBrowser = ({
           {shouldShowInstanceList && (
             <div className="mx-auto mt-0.5 flex w-1/4 flex-col">
               <span className="text-muted-foreground flex h-6 min-w-0 items-center whitespace-nowrap pb-2 text-base">
-                <span className="truncate">Instance Number</span>
+                <span className="truncate">{t('Instance Number')}</span>
                 <span className="shrink-0">
                   &nbsp;({instanceNumber} of {activeDisplaySet?.images?.length})
                 </span>
@@ -185,7 +187,7 @@ const DicomTagBrowser = ({
           )}
           <div className="ml-auto mr-1 flex w-1/3 flex-col">
             <span className="text-muted-foreground flex h-6 items-center pb-2 text-base">
-              Search metadata
+              {t('Search metadata')}
             </span>
             <InputFilter
               className="text-muted-foreground"
@@ -193,7 +195,7 @@ const DicomTagBrowser = ({
             >
               <InputFilter.SearchIcon />
               <InputFilter.Input
-                placeholder="Search metadata"
+                placeholder={t('Search metadata')}
                 className="pl-9 pr-9"
               />
               <InputFilter.ClearButton className="text-primary mr-0.5 p-0.5" />

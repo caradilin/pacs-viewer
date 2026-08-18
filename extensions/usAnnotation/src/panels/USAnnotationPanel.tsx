@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Enums as csToolsEnums, UltrasoundPleuraBLineTool } from '@cornerstonejs/tools';
 import { eventTarget, utilities } from '@cornerstonejs/core';
 import { useSystem } from '@ohif/core';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 import {
   /* Layout */
@@ -30,8 +31,43 @@ import {
  * @returns The USAnnotationPanel component
  */
 export default function USAnnotationPanel() {
-  const { t } = useTranslation('USAnnotationPanel');
+  const { t: defaultT, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
   const { servicesManager, commandsManager } = useSystem();
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    (text: string, namespace?: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      if (namespace) {
+        return i18n.t(text, { ns: namespace, defaultValue: text });
+      }
+      return i18n.t(text, { defaultValue: text });
+    },
+    [lang]
+  );
+
+  const t = useCallback(
+    (key: string) => {
+      return translateText(key, 'USAnnotationPanel');
+    },
+    [translateText]
+  );
 
   /** ──────────────────────────────────────────────────────
    * Local state – purely UI related (no business logic).   */

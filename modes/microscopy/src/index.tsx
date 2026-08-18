@@ -1,4 +1,3 @@
-import i18n from 'i18next';
 
 import { id } from './id';
 import toolbarButtons from './toolbarButtons';
@@ -38,7 +37,7 @@ function modeFactory({ modeConfiguration }) {
   return {
     id,
     routeName: 'microscopy',
-    displayName: i18n.t('Modes:Microscopy'),
+    displayName: 'Microscopy',
 
     /**
      * Lifecycle hooks

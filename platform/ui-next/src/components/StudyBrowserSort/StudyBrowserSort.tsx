@@ -7,12 +7,40 @@ import {
   DropdownMenuItem,
 } from '../DropdownMenu/DropdownMenu';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../Tooltip';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 export function StudyBrowserSort({ servicesManager }: withAppTypes) {
   // Todo: this should not be here, no servicesManager should be in ui-next, only
   // customization service
   const { customizationService, displaySetService } = servicesManager.services;
   const sortFunctions = customizationService.getCustomization('studyBrowser.sortFunctions');
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateLabel = React.useCallback(
+    (label: string) => {
+      if (!label) {
+        return label;
+      }
+      if (label.includes(':')) {
+        const [ns, key] = label.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return label;
+    },
+    [lang]
+  );
 
   const [selectedSort, setSelectedSort] = useState(sortFunctions[0]);
   const [sortDirection, setSortDirection] = useState('ascending');
@@ -56,10 +84,10 @@ export function StudyBrowserSort({ servicesManager }: withAppTypes) {
         <Tooltip>
           <TooltipTrigger className="w-full overflow-hidden">
             <DropdownMenuTrigger className="border-input focus:border-input text-foreground flex h-[26px] w-full items-center justify-start overflow-hidden whitespace-nowrap rounded border bg-background p-2 text-base">
-              {selectedSort.label}
+              {translateLabel(selectedSort.label)}
             </DropdownMenuTrigger>
           </TooltipTrigger>
-          <TooltipContent>{selectedSort.label}</TooltipContent>
+          <TooltipContent>{translateLabel(selectedSort.label)}</TooltipContent>
         </Tooltip>
         <DropdownMenuContent className="bg-background">
           {sortFunctions.map(sort => (
@@ -68,7 +96,7 @@ export function StudyBrowserSort({ servicesManager }: withAppTypes) {
               className="text-foreground"
               onClick={() => handleSortChange(sort)}
             >
-              {sort.label}
+              {translateLabel(sort.label)}
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

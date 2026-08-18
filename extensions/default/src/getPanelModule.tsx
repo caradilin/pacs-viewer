@@ -1,6 +1,5 @@
 import React from 'react';
 import { WrappedPanelStudyBrowser } from './Panels';
-import i18n from 'i18next';
 
 // TODO:
 // - No loading UI exists yet
@@ -12,8 +11,8 @@ function getPanelModule({ commandsManager, extensionManager, servicesManager }) 
     {
       name: 'seriesList',
       iconName: 'tab-studies',
-      iconLabel: 'Studies',
-      label: i18n.t('SidePanel:Studies'),
+      iconLabel: 'SidePanel:Studies',
+      label: 'SidePanel:Studies',
       component: props => (
         <WrappedPanelStudyBrowser
           {...props}

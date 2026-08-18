@@ -20,6 +20,7 @@
  * - platform/ui-next/src/components/StudyList/components/PreviewContent.tsx (in-context example, including empty state handling)
  */
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import { cn } from '../../../lib/utils';
 import { Icons } from '../../Icons/Icons';
@@ -61,11 +62,13 @@ function Root({ data: dataProp, className, children }: RootProps) {
 }
 
 function Patient({ className }: { className?: string } = {}) {
+  const { t } = useTranslation('Common');
   const { data } = useSummaryContext();
   const patientName = data?.patientName;
   const mrn = data?.mrn;
 
-  const nameContent = patientName ?? 'Select a study';
+  const selectAStdudyLabel = t('Select a study', { defaultValue: 'Select a study' });
+  const nameContent = patientName ?? selectAStdudyLabel;
   const nameTitle =
     typeof patientName === 'string' || typeof patientName === 'number'
       ? String(patientName)
@@ -113,6 +116,7 @@ function Patient({ className }: { className?: string } = {}) {
  *   remaining applicable workflows as buttons below.
  */
 function Workflows({ className }: { className?: string } = {}) {
+  const { t } = useTranslation('Common');
   const { data: studyRow } = useSummaryContext();
   const { workflows, getWorkflowsForStudy, getDefaultWorkflowForStudy, setDefaultWorkflowId } =
     useWorkflows();
@@ -135,20 +139,22 @@ function Workflows({ className }: { className?: string } = {}) {
     if (!defaultWorkflow) {
       return availableWorkflows;
     }
-    return availableWorkflows.filter(w => w.displayName !== defaultWorkflow.displayName);
+    return availableWorkflows.filter(w => w.id !== defaultWorkflow.id);
   }, [availableWorkflows, defaultWorkflow]);
 
-  const handleLaunch = (displayName: string) => {
+  const handleLaunch = (workflowId: string) => {
     if (!studyRow) {
       return;
     }
-    const wf = availableWorkflows.find(w => w.displayName === displayName);
+    const wf = availableWorkflows.find(w => w.id === workflowId);
     wf?.launchWithStudy(studyRow);
   };
 
   const handleClearDefault = () => {
     setDefaultWorkflowId();
   };
+
+  const clearDefaultAria = t('Common:Clear default mode', { defaultValue: 'Clear default mode' });
 
   return (
     <div
@@ -158,7 +164,9 @@ function Workflows({ className }: { className?: string } = {}) {
       )}
     >
       <div className="flex w-full items-center justify-between">
-        <span className="text-foreground text-base font-medium leading-tight">Launch workflow</span>
+        <span className="text-foreground text-base font-medium leading-tight">
+          {t('Common:Launch workflow', { defaultValue: 'Launch workflow' })}
+        </span>
         <span
           className="text-primary shrink-0 -translate-y-0.5"
           aria-hidden
@@ -178,7 +186,7 @@ function Workflows({ className }: { className?: string } = {}) {
             variant="ghost"
             size="sm"
             className="bg-primary/20 text-primary ring-primary ring-offset-background ml-1 mb-1 h-6 w-32 overflow-hidden ring-1 ring-offset-2"
-            onClick={() => handleLaunch(defaultWorkflow.displayName)}
+            onClick={() => handleLaunch(defaultWorkflow.id)}
             title={defaultWorkflow.displayName}
           >
             <span className="truncate">{defaultWorkflow.displayName}</span>
@@ -187,7 +195,7 @@ function Workflows({ className }: { className?: string } = {}) {
             type="button"
             variant="ghost"
             size="icon"
-            aria-label="Clear default mode"
+            aria-label={clearDefaultAria}
             className="text-primary focus-visible:ring-ring focus-visible:ring-offset-background ml-1.5 mb-1 opacity-70 transition hover:opacity-100 focus-visible:ring-2 focus-visible:ring-offset-2"
             onClick={handleClearDefault}
           >
@@ -195,24 +203,26 @@ function Workflows({ className }: { className?: string } = {}) {
               className="text-primary h-3.5 w-3.5"
               aria-hidden
             />
-            <span className="sr-only">Clear default mode</span>
+            <span className="sr-only">{clearDefaultAria}</span>
           </Button>
         </div>
       )}
 
       {defaultWorkflow && studyRow && otherWorkflows.length > 0 && (
-        <div className="text-muted-foreground mt-2 text-sm">Other Available Workflows</div>
+        <div className="text-muted-foreground mt-2 text-sm">
+          {t('Common:Other Available Workflows', { defaultValue: 'Other Available Workflows' })}
+        </div>
       )}
 
       {studyRow && otherWorkflows.length > 0 && (
         <div className="mt-2 flex flex-wrap items-center gap-0">
           {otherWorkflows.map(wf => (
             <Button
-              key={wf.displayName}
+              key={wf.id}
               variant="ghost"
               size="sm"
               className="bg-primary/20 ml-1 mb-1 h-6 w-32 overflow-hidden"
-              onClick={() => handleLaunch(wf.displayName)}
+              onClick={() => handleLaunch(wf.id)}
               title={wf.displayName}
             >
               <span className="truncate">{wf.displayName}</span>

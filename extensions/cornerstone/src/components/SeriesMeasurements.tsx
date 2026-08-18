@@ -26,7 +26,7 @@ export const groupByDisplaySet = (items, grouping, childProps) => {
         ...grouping,
         items: [],
         key: displaySetInstanceUID,
-        title: 'Series Measurements',
+        title: 'MeasurementTable:Series Measurements',
         displaySet,
       });
     }

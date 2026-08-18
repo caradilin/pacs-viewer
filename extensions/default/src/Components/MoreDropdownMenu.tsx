@@ -8,6 +8,8 @@ import {
   Button,
 } from '@ohif/ui-next';
 import { useSystem } from '@ohif/core';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 /**
  * The default sub-menu appearance and setup is defined here, but this can be
@@ -16,6 +18,32 @@ import { useSystem } from '@ohif/core';
 const getMenuItemsDefault = ({ commandsManager, items, ...props }: withAppTypes) => {
   const { servicesManager } = useSystem();
   const { customizationService } = servicesManager.services;
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = React.useState(i18nextInstance?.language || i18n.language);
+
+  React.useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateLabel = React.useCallback(
+    (label: string) => {
+      if (!label) {
+        return label;
+      }
+      if (label.includes(':')) {
+        const [ns, key] = label.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return label;
+    },
+    [lang]
+  );
 
   // This allows replacing the default child item for menus, whereas the entire
   // getMenuItems can also be replaced by providing it to the MoreDropdownMenu
@@ -36,7 +64,7 @@ const getMenuItemsDefault = ({ commandsManager, items, ...props }: withAppTypes)
     <DropdownMenuItem onClick={() => item.onClick({ commandsManager, servicesManager, ...props })}>
       <div className="flex items-center gap-2">
         {item.iconName && <Icons.ByName name={item.iconName} />}
-        <span>{item.label}</span>
+        <span>{translateLabel(item.label)}</span>
       </div>
     </DropdownMenuItem>
   );

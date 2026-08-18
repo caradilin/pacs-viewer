@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import type { StudyRow } from '../types/types';
 import { useDefaultWorkflow } from '../hooks/useDefaultWorkflow';
 
@@ -10,7 +11,7 @@ import { useDefaultWorkflow } from '../hooks/useDefaultWorkflow';
 export interface Workflow {
   /** Unique identifier for the workflow (from mode.id) */
   readonly id: string;
-  /** Display name of the workflow (from mode.displayName) */
+  /** Display name of the workflow (from mode.displayName, localized) */
   readonly displayName: string;
   /** Launches the study using this workflow's route */
   launchWithStudy: (studyRow: StudyRow) => void;
@@ -67,6 +68,7 @@ export function WorkflowsProvider({
   children,
 }: WorkflowsProviderProps) {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   // Get valid workflow IDs from loaded modes (for validation)
   const validWorkflowIds = React.useMemo(() => {
@@ -109,7 +111,9 @@ export function WorkflowsProvider({
           return mode.id;
         },
         get displayName() {
-          return mode.displayName;
+          return t(`Modes:${mode.displayName}`, {
+            defaultValue: mode.displayName,
+          });
         },
         launchWithStudy: (studyRow: StudyRow) => {
           if (!studyRow.studyInstanceUid) {
@@ -149,7 +153,7 @@ export function WorkflowsProvider({
     }
 
     return workflowList;
-  }, [loadedModes, defaultWorkflowId, dataPath, navigate, preserveQueryParameters]);
+  }, [loadedModes, defaultWorkflowId, dataPath, navigate, preserveQueryParameters, t]);
 
   const getWorkflowsForStudy = React.useCallback(
     (studyRow: StudyRow): Workflow[] => {

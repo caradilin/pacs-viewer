@@ -24,6 +24,16 @@ import CaptureViewportModal from './CaptureViewportModal.json';
 import Hps from './Hps.json';
 import ToolbarLayoutSelector from './ToolbarLayoutSelector.json';
 import Tools from './Tools.json';
+import InvestigationalUseDialog from './InvestigationalUseDialog.json';
+import DataTable from './DataTable.json';
+import AppearanceModal from './AppearanceModal.json';
+import SegmentationPanel from './SegmentationPanel.json';
+import DicomTagBrowser from './DicomTagBrowser.json';
+import ROIThresholdConfiguration from './ROIThresholdConfiguration.json';
+import DynamicVolume from './DynamicVolume.json';
+import Workflow from './Workflow.json';
+import WorkflowSteps from './WorkflowSteps.json';
+import USAnnotationPanel from './USAnnotationPanel.json';
 
 export default {
   zh: {
@@ -53,5 +63,15 @@ export default {
     Hps,
     ToolbarLayoutSelector,
     Tools,
+    InvestigationalUseDialog,
+    DataTable,
+    AppearanceModal,
+    SegmentationPanel,
+    DicomTagBrowser,
+    ROIThresholdConfiguration,
+    DynamicVolume,
+    Workflow,
+    WorkflowSteps,
+    USAnnotationPanel,
   },
 };

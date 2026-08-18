@@ -8,5 +8,11 @@
   "Apply": "Apply",
   "Clear": "Clear",
   "No valid theme tokens found": "No valid theme tokens found. Expected lines like --primary: 220 90% 60%",
-  "Paste your custom theme color tokens here": "Paste your custom theme color tokens here"
+  "Paste your custom theme color tokens here": "Paste your custom theme color tokens here",
+  "Tonal - Orchid": "Tonal: Orchid",
+  "Tonal - Arctic": "Tonal: Arctic",
+  "Tonal - Verdant": "Tonal: Verdant",
+  "Neutral - Midnight": "Neutral: Midnight",
+  "Neutral - Slate": "Neutral: Slate",
+  "Neutral - Deep": "Neutral: Deep"
 }

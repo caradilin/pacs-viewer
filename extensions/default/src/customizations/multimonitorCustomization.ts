@@ -3,12 +3,12 @@ export default {
     $push: [
       {
         id: 'applyHangingProtocol',
-        label: 'Apply Hanging Protocol',
+        label: 'StudyBrowser:Apply Hanging Protocol',
         iconName: 'ViewportViews',
         items: [
           {
             id: 'applyDefaultProtocol',
-            label: 'Default',
+            label: 'StudyBrowser:Default',
             commands: [
               'loadStudy',
               {
@@ -21,7 +21,7 @@ export default {
           },
           {
             id: 'applyMPRProtocol',
-            label: '2x2 Grid',
+            label: 'StudyBrowser:2x2 Grid',
             commands: [
               'loadStudy',
               {
@@ -36,7 +36,7 @@ export default {
       },
       {
         id: 'showInOtherMonitor',
-        label: 'Launch On Second Monitor',
+        label: 'StudyBrowser:Launch On Second Monitor',
         iconName: 'DicomTagBrowser',
         selector: ({ servicesManager }) => {
           const { multiMonitorService } = servicesManager.services;

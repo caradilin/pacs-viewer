@@ -18,11 +18,20 @@ type ViewOptionsProps = {
   buttonText?: string;
 };
 
-export function ViewOptions<TData>({ buttonText = 'View' }: ViewOptionsProps) {
-  const { t } = useTranslation('DataTable');
+export function ViewOptions<TData>({ buttonText }: ViewOptionsProps) {
+  const { t } = useTranslation(['DataTable', 'StudyList', 'Common']);
   const { table } = useDataTable<TData>();
   const unfitColumnIds = useUnfitColumnIds();
   const columns = table.getAllColumns().filter(c => c.getCanHide());
+  const defaultViewLabel = t('DataTable:View', { defaultValue: 'View' });
+  const displayButtonText = buttonText ?? defaultViewLabel;
+
+  const translateLabel = (label: string) => {
+    const key1 = `StudyList:${label}`;
+    const key2 = `StudyList:${label.replace(/\s+/g, '')}`;
+    const key3 = `Common:${label}`;
+    return t([key1, key2, key3], { defaultValue: label });
+  };
 
   return (
     <DropdownMenu>
@@ -32,14 +41,15 @@ export function ViewOptions<TData>({ buttonText = 'View' }: ViewOptionsProps) {
           size="sm"
           className="gap-1 text-sm"
         >
-          {buttonText}
+          {displayButtonText}
           <Icons.ChevronDown className="h-2 w-2" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {columns.map(column => {
           const meta = (column.columnDef.meta as ColumnMeta | undefined) ?? undefined;
-          const label = meta?.label ?? column.id;
+          const rawLabel = meta?.label ?? column.id;
+          const label = typeof rawLabel === 'string' ? translateLabel(rawLabel) : rawLabel;
           const isUnfit = !column.getIsVisible() && unfitColumnIds.has(column.id);
           const checkbox = (
             <DropdownMenuCheckboxItem

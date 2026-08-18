@@ -17,11 +17,11 @@ interface HotkeyDefinitions {
   [key: string]: HotkeyDefinition;
 }
 
-const MODIFIER_OPTIONS = [
-  { value: '16', label: 'Shift' },
-  { value: '17', label: 'Ctrl' },
-  { value: '18', label: 'Alt' },
-  { value: '91', label: 'Meta' },
+const MODIFIER_VALUES = [
+  { value: '16', key: 'shift' },
+  { value: '17', key: 'ctrl' },
+  { value: '18', key: 'alt' },
+  { value: '91', key: 'meta' },
 ];
 
 const DEFAULT_TOOL_BINDINGS_STORAGE_KEY = 'user-preferred-tool-bindings';
@@ -204,7 +204,7 @@ function UserPreferencesModalDefault({ hide }: { hide: () => void }) {
           >
             <SelectTrigger
               className="w-60"
-              aria-label="Language"
+              aria-label={t('Language', { defaultValue: 'Language' })}
             >
               <SelectValue placeholder={t('Select language')} />
             </SelectTrigger>
@@ -257,12 +257,14 @@ function UserPreferencesModalDefault({ hide }: { hide: () => void }) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {MODIFIER_OPTIONS.map(opt => (
+                      {MODIFIER_VALUES.map(opt => (
                         <SelectItem
                           key={opt.value}
                           value={opt.value}
                         >
-                          {opt.label}
+                          {t(`HotkeyKeys.${opt.key}`, {
+                            defaultValue: opt.key.charAt(0).toUpperCase() + opt.key.slice(1),
+                          })}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -294,15 +296,13 @@ function UserPreferencesModalDefault({ hide }: { hide: () => void }) {
               if (state.languageValue !== currentLanguage.value) {
                 i18n.changeLanguage(state.languageValue);
                 // Force page reload after language change to ensure all translations are applied
-                window.location.reload();
-                return; // Exit early since we're reloading
+                // window.location.reload();
+                // return; // Exit early since we're reloading
               }
               hotkeysManager.setHotkeys(state.hotkeyDefinitions);
 
               if (toolGroupService && state.crosshairModifier != null) {
-                const bindings = [
-                  { mouseButton: 1, modifierKey: Number(state.crosshairModifier) },
-                ];
+                const bindings = [{ mouseButton: 1, modifierKey: Number(state.crosshairModifier) }];
                 toolGroupService.setToolBindings('mpr', 'Crosshairs', bindings);
                 toolGroupService.applyToolBindings('mpr', 'Crosshairs', {
                   replaceExisting: true,

@@ -33,6 +33,11 @@ import Colormaps from './Colormaps.json';
 import PanelSUV from './PanelSUV.json';
 import ROIThresholdConfiguration from './ROIThresholdConfiguration.json';
 import USAnnotationPanel from './USAnnotationPanel.json';
+import InvestigationalUseDialog from './InvestigationalUseDialog.json';
+import DicomTagBrowser from './DicomTagBrowser.json';
+import DynamicVolume from './DynamicVolume.json';
+import Workflow from './Workflow.json';
+import WorkflowSteps from './WorkflowSteps.json';
 
 export default {
   'en-US': {
@@ -71,5 +76,10 @@ export default {
     PanelSUV,
     ROIThresholdConfiguration,
     USAnnotationPanel,
+    InvestigationalUseDialog,
+    DicomTagBrowser,
+    DynamicVolume,
+    Workflow,
+    WorkflowSteps,
   },
 };

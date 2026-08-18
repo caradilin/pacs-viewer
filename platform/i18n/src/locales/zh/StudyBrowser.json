@@ -8,5 +8,9 @@
   "Series Number": "序列编号",
   "Series Date": "序列时间",
   "Thumbnail Double Click": "缩略图双击",
-  "The selected display sets could not be added to the viewport.": "所选显示集无法添加到视图端口。"
+  "The selected display sets could not be added to the viewport.": "所选显示集无法添加到视图端口。",
+  "Apply Hanging Protocol": "应用悬挂协议",
+  "Default": "默认",
+  "2x2 Grid": "2x2 网格",
+  "Launch On Second Monitor": "在第二显示器上启动"
 }

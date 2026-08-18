@@ -58,6 +58,9 @@ const languagesMap = {
   'test-LNG': 'Test Language',
 };
 
+// 仅允许英文和中文，用于偏好设置中的语言下拉
+const ALLOWED_LANGUAGES = ['en-US', 'zh'];
+
 const getLanguageLabel = language => {
   return languagesMap[language];
 };
@@ -65,11 +68,13 @@ const getLanguageLabel = language => {
 export default function getAvailableLanguagesInfo(locales) {
   const availableLanguagesInfo = [];
 
-  Object.keys(locales).forEach(key => {
-    availableLanguagesInfo.push({
-      value: key,
-      label: getLanguageLabel(key) || key,
-    });
+  ALLOWED_LANGUAGES.forEach(key => {
+    if (locales[key]) {
+      availableLanguagesInfo.push({
+        value: key,
+        label: getLanguageLabel(key) || key,
+      });
+    }
   });
 
   return availableLanguagesInfo;

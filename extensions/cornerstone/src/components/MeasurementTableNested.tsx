@@ -13,9 +13,11 @@ export default function MeasurementTableNested(props) {
     commandsManager.run(command, { uid, annotationUID: uid, displayMeasurements: items });
   };
 
+  const displayTitle = title || 'MeasurementTable:Measurements';
+
   return (
     <MeasurementTable
-      title={title ? title : `Measurements`}
+      title={displayTitle}
       data={items}
       onAction={onAction}
       {...group}

@@ -7,6 +7,7 @@ import {
   SegmentationTable,
   ToolSettings,
 } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 import { useActiveViewportSegmentationRepresentations } from '../hooks/useActiveViewportSegmentationRepresentations';
 import { useActiveToolOptions, useSystem } from '@ohif/core/src';
 import { SegmentationRepresentations } from '@cornerstonejs/tools/enums';
@@ -31,6 +32,7 @@ export default function PanelSegmentation({
   segmentationRepresentationTypes,
 }: PanelSegmentationProps) {
   const { commandsManager, servicesManager } = useSystem();
+  const { t } = useTranslation('SegmentationPanel');
   const {
     customizationService,
     displaySetService,
@@ -237,7 +239,7 @@ export default function PanelSegmentation({
     disabled,
     data: segmentationsWithRepresentations,
     mode: segmentationTableMode,
-    title: `${segmentationRepresentationTypes?.[0] ? `${segmentationRepresentationTypes[0]} ` : ''}Segmentations`,
+    title: `${segmentationRepresentationTypes?.[0] ? `${t(segmentationRepresentationTypes[0])} ` : ''}${t('Segmentations')}`,
     exportOptions,
     disableEditing,
     onSegmentationAdd,

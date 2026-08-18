@@ -1,0 +1,20 @@
+{
+  "Controls": "控件",
+  "View": "视图",
+  "Computed": "计算视图",
+  "4D Controls": "4D 控件",
+  "Select the view mode, 4D to view the dynamic volume or Computed to view the computed volume": "选择视图模式，4D 查看动态容积或计算视图查看计算后的容积",
+  "Computed Operation": "计算操作",
+  "Operation Buttons (SUM, AVERAGE, SUBTRACT): Select the mathematical operation to be applied to the data set.": "操作按钮（求和、平均、相减）：选择要应用于数据集的数学运算。",
+  "Range Slider: Choose the numeric range of dimension groups within which the operation will be performed.": "范围滑块：选择要执行运算的维度组数值范围。",
+  "Generate Button: Execute the chosen operation on the specified range of data.": "生成按钮：对指定的数据范围执行所选运算。",
+  "SUM": "求和",
+  "AVERAGE": "平均",
+  "SUBTRACT": "相减",
+  "Generate": "生成",
+  "Play/Pause Button: Begin or pause the animation of the 4D visualization.": "播放/暂停按钮：开始或暂停 4D 可视化的动画。",
+  "Dimension Group Selector: Navigate through individual dimension groups of the 4D data.": "维度组选择器：在 4D 数据的各个维度组之间浏览。",
+  "FPS (Frames Per Second) Selector: Adjust the playback speed of the animation.": "FPS（每秒帧数）选择器：调整动画的播放速度。",
+  "Frame": "帧数",
+  "FPS": "帧率"
+}

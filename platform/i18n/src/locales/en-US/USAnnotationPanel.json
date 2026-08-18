@@ -13,5 +13,15 @@
   "Pleura lines": "Pleura lines",
   "B-lines": "B-lines",
   "JSON": "JSON",
-  "Annotations": "Annotations"
+  "Annotations": "Annotations",
+  "Add new pleura line": "Add new pleura line",
+  "Add new B-line": "Add new B-line",
+  "Delete last pleura line": "Delete last pleura line",
+  "Delete last B-line": "Delete last B-line",
+  "Toggle overlay": "Toggle overlay",
+  "Delete annotation": "Delete annotation",
+  "B-Line/Pleura : N/A": "B-Line/Pleura : N/A",
+  "B-Line/Pleura : {{percentage}} %": "B-Line/Pleura : {{percentage}} %",
+  "Pleura b-lines annotation mode when the study involves US modality series": "Pleura b-lines annotation mode when the study involves US modality series",
+  "Enter a label and press Enter": "Enter a label and press Enter"
 }

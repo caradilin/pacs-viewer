@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Icons, PanelSection, ToolSettings } from '@ohif/ui-next';
 import { useSystem, useToolbar, useActiveToolOptions } from '@ohif/core';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 /**
  * Props for the Toolbox component that renders a collection of toolbar button sections.
@@ -30,7 +31,48 @@ interface ToolboxProps {
  */
 export function Toolbox({ buttonSectionId, title }: ToolboxProps) {
   const { servicesManager } = useSystem();
-  const { t } = useTranslation();
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    (text: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        // 优先通过 useTranslation 的 t(ns + ':' + key) 查询，确保命中资源；
+        // 注意 init 中 keySeparator:false，但 nsSeparator 默认是 ':'，因此
+        // 'Namespace:key' 形式的字符串会被 i18next 正确解析为 ns 查找
+        const fullKey = `${ns}:${key}`;
+        const fromHook = t(fullKey);
+        if (fromHook && fromHook !== fullKey) {
+          return fromHook;
+        }
+        const fromInstance = i18nextInstance?.t?.(key, { ns, defaultValue: key });
+        if (fromInstance && fromInstance !== key) {
+          return fromInstance;
+        }
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      const fromHook = t(text);
+      if (fromHook && fromHook !== text) {
+        return fromHook;
+      }
+      return text;
+    },
+    [lang, t, i18nextInstance]
+  );
 
   const { toolbarService, customizationService } = servicesManager.services;
   const [showConfig, setShowConfig] = useState(false);
@@ -62,7 +104,7 @@ export function Toolbox({ buttonSectionId, title }: ToolboxProps) {
   return (
     <PanelSection>
       <PanelSection.Header className="flex items-center justify-between">
-        <span>{t(title)}</span>
+        <span>{translateText(title)}</span>
         {CustomConfigComponent && (
           <div className="ml-auto mr-2">
             <Icons.Settings

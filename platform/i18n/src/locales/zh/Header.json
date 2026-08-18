@@ -1,8 +1,13 @@
 {
   "About": "关于",
+  "Appearance": "外观",
   "Back to Viewer": "返回视图",
-  "INVESTIGATIONAL USE ONLY": "研究用途",
+  "INVESTIGATIONAL USE ONLY": "仅供研究使用",
   "Options": "选项",
-  "Preferences": "偏好",
-  "Study list": "研究列表"
+  "Preferences": "偏好设置",
+  "Study list": "检查列表",
+  "Logout": "退出登录",
+  "Toggle language": "切换语言",
+  "Patient": "患者",
+  "Multiple Patients": "多位患者"
 }

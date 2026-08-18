@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Button } from '../Button';
 import { Icons } from '../Icons';
 import {
@@ -9,6 +9,8 @@ import {
 } from '../DropdownMenu';
 import { cn } from '../../lib/utils';
 import { Tooltip, TooltipTrigger, TooltipContent } from '../Tooltip';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 /**
  * ToolButtonList Component
@@ -48,7 +50,36 @@ interface ToolButtonListDefaultProps extends React.HTMLAttributes<HTMLDivElement
 
 const ToolButtonListDefault = React.forwardRef<HTMLDivElement, ToolButtonListDefaultProps>(
   ({ className, children, tooltip, disabledText, disabled, ...props }, ref) => {
-    const hasTooltip = tooltip || disabledText;
+    const { t, i18n: i18nextInstance } = useTranslation();
+    const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+    useEffect(() => {
+      const handleLanguageChanged = () => {
+        setLang(i18n.language);
+      };
+      i18n.on('languageChanged', handleLanguageChanged);
+      return () => {
+        i18n.off('languageChanged', handleLanguageChanged);
+      };
+    }, []);
+
+    const translateText = useCallback(
+      (text: string) => {
+        if (!text) {
+          return text;
+        }
+        if (text.includes(':')) {
+          const [ns, key] = text.split(':');
+          return i18n.t(key, { ns, defaultValue: key });
+        }
+        return text;
+      },
+      [lang]
+    );
+
+    const translatedTooltip = translateText(tooltip);
+    const translatedDisabledText = translateText(disabledText);
+    const hasTooltip = translatedTooltip || translatedDisabledText;
 
     const defaultContent = (
       <div
@@ -70,8 +101,8 @@ const ToolButtonListDefault = React.forwardRef<HTMLDivElement, ToolButtonListDef
           <span>{defaultContent}</span>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          {tooltip && <div>{tooltip}</div>}
-          {disabledText && disabled && <div className="text-muted-foreground">{disabledText}</div>}
+          {translatedTooltip && <div>{translatedTooltip}</div>}
+          {translatedDisabledText && disabled && <div className="text-muted-foreground">{translatedDisabledText}</div>}
         </TooltipContent>
       </Tooltip>
     );
@@ -140,7 +171,36 @@ const ToolButtonListItem = React.forwardRef<
   React.ElementRef<typeof DropdownMenuItem>,
   ToolButtonListItemProps
 >(({ className, children, icon, disabledText, tooltip, disabled, ...props }, ref) => {
-  const defaultTooltip = tooltip || (typeof children === 'string' ? children : undefined);
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    (text: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return text;
+    },
+    [lang]
+  );
+
+  const translatedTooltip = translateText(tooltip);
+  const translatedDisabledText = translateText(disabledText);
+  const defaultTooltip = translatedTooltip || (typeof children === 'string' ? children : undefined);
 
   const menuItem = (
     <DropdownMenuItem
@@ -173,7 +233,7 @@ const ToolButtonListItem = React.forwardRef<
       </TooltipTrigger>
       <TooltipContent side="bottom">
         {defaultTooltip && <div>{defaultTooltip}</div>}
-        {disabledText && disabled && <div className="text-muted-foreground">{disabledText}</div>}
+        {translatedDisabledText && disabled && <div className="text-muted-foreground">{translatedDisabledText}</div>}
       </TooltipContent>
     </Tooltip>
   );

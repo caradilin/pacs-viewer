@@ -25,5 +25,14 @@
   "Back": "Back",
   "Foreground": "Foreground",
   "SELECT A FOREGROUND": "SELECT A FOREGROUND",
-  "SELECT A SEGMENTATION": "SELECT A SEGMENTATION"
+  "SELECT A SEGMENTATION": "SELECT A SEGMENTATION",
+  "Currently tracking measurements in this viewport": "Currently tracking measurements in this viewport",
+  "This Segmentation is loaded in the segmentation panel": "This Segmentation is loaded in the segmentation panel",
+  "Click LOAD to load segmentation.": "Click LOAD to load segmentation.",
+  "This RTSTRUCT is loaded in the segmentation panel": "This RTSTRUCT is loaded in the segmentation panel",
+  "Click LOAD to load RTSTRUCT.": "Click LOAD to load RTSTRUCT.",
+  "This structured report is not compatible with this application.": "This structured report is not compatible with this application.",
+  "This structured report is currently read-only because you are tracking measurements in another viewport.": "This structured report is currently read-only because you are tracking measurements in another viewport.",
+  "Click {{loadStr}} to restore measurements.": "Click {{loadStr}} to restore measurements.",
+  "Read more...": "Read more..."
 }

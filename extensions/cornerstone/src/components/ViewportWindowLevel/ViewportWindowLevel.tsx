@@ -4,6 +4,8 @@ import debounce from 'lodash.debounce';
 import { PanelSection, WindowLevel } from '@ohif/ui-next';
 import { Enums, eventTarget, utilities as csUtils, Types } from '@cornerstonejs/core';
 import { useActiveViewportDisplaySets } from '@ohif/core';
+import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 import {
   getNodeOpacity,
   isPetVolumeWithDefaultOpacity,
@@ -20,6 +22,21 @@ const ViewportWindowLevel = ({
   viewportId: string;
 }>): ReactElement => {
   const { cornerstoneViewportService } = servicesManager.services;
+  const { t, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const windowLevelTitle = i18n.t('Window Level', { ns: 'MeasurementTable', defaultValue: 'Window Level' });
+
   const [windowLevels, setWindowLevels] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const displaySets = useActiveViewportDisplaySets();
@@ -209,7 +226,7 @@ const ViewportWindowLevel = ({
 
   return (
     <PanelSection defaultOpen={true}>
-      <PanelSection.Header>Window Level</PanelSection.Header>
+      <PanelSection.Header>{windowLevelTitle}</PanelSection.Header>
       <PanelSection.Content className="bg-muted py-1">
         {windowLevels.map((windowLevel, i) => {
           if (!windowLevel.histogram) {

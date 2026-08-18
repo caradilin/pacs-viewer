@@ -6,7 +6,6 @@ import {
   onModeEnter as basicOnModeEnter,
   onModeExit,
 } from '@ohif/mode-basic';
-import i18n from 'i18next';
 
 import { id } from './id.js';
 import initToolGroups, { toolGroupIds } from './initToolGroups.js';
@@ -152,7 +151,7 @@ export const modeInstance = {
   // We should not be.
   id,
   routeName: 'tmtv',
-  displayName: i18n.t('Modes:Total Metabolic Tumor Volume'),
+  displayName: 'Total Metabolic Tumor Volume',
   // Toolbar/tool-group composition: which capability packs this mode uses.
   // The mode route seeds these onto the Mode customization scope on enter, so
   // `?customization=` modules extend them through the `mode` phase. The tmtv

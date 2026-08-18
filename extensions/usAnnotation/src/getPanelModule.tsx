@@ -21,8 +21,8 @@ const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: 
     {
       name: 'USAnnotationPanel',
       iconName: 'tab-linear',
-      iconLabel: 'US Annotation',
-      label: 'USAnnotation',
+      iconLabel: 'SidePanel:US Annotation',
+      label: 'SidePanel:US Annotation',
       component: wrappedUSAnnotationPanel,
     },
   ];

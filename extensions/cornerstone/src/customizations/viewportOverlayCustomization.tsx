@@ -1,10 +1,12 @@
+import i18n from 'i18next';
+
 export default {
   'viewportOverlay.topLeft': [
     {
       id: 'StudyDate',
       inheritsFrom: 'ohif.overlayItem',
       label: '',
-      title: 'Study date',
+      title: i18n.t('MeasurementTable:Study date'),
       condition: ({ referenceInstance }) => referenceInstance?.StudyDate,
       contentF: ({ referenceInstance, formatters: { formatDate } }) =>
         formatDate(referenceInstance.StudyDate),
@@ -13,7 +15,7 @@ export default {
       id: 'SeriesDescription',
       inheritsFrom: 'ohif.overlayItem',
       label: '',
-      title: 'Series description',
+      title: i18n.t('MeasurementTable:Series description'),
       condition: ({ referenceInstance }) => {
         return referenceInstance && referenceInstance.SeriesDescription;
       },
@@ -25,7 +27,7 @@ export default {
     {
       id: 'WindowLevel',
       inheritsFrom: 'ohif.overlayItem.windowLevel',
-      title: 'Window Level',
+      title: i18n.t('MeasurementTable:Window Level'),
     },
     {
       id: 'ZoomLevel',
@@ -40,7 +42,7 @@ export default {
     {
       id: 'InstanceNumber',
       inheritsFrom: 'ohif.overlayItem.instanceNumber',
-      title: 'Instance Number',
+      title: i18n.t('MeasurementTable:Instance Number'),
     },
   ],
 };

@@ -5,7 +5,6 @@ import PanelSegmentation from './panels/PanelSegmentation';
 import ActiveViewportWindowLevel from './components/ActiveViewportWindowLevel';
 import PanelMeasurement from './panels/PanelMeasurement';
 import { SegmentationRepresentations } from '@cornerstonejs/tools/enums';
-import i18n from '@ohif/i18n';
 
 const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: withAppTypes) => {
   const { toolbarService } = servicesManager.services;
@@ -77,29 +76,29 @@ const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: 
     {
       name: 'panelMeasurement',
       iconName: 'tab-linear',
-      iconLabel: 'Measure',
-      label: 'Measurement',
+      iconLabel: 'SidePanel:Measure',
+      label: 'SidePanel:Measurement',
       component: PanelMeasurement,
     },
     {
       name: 'panelSegmentation',
       iconName: 'tab-segmentation',
-      iconLabel: 'Segmentation',
-      label: 'Segmentation',
+      iconLabel: 'SidePanel:Segmentation',
+      label: 'SidePanel:Segmentation',
       component: wrappedPanelSegmentation,
     },
     {
       name: 'panelSegmentationNoHeader',
       iconName: 'tab-segmentation',
-      iconLabel: 'Segmentation',
-      label: 'Segmentation',
+      iconLabel: 'SidePanel:Segmentation',
+      label: 'SidePanel:Segmentation',
       component: wrappedPanelSegmentationNoHeader,
     },
     {
       name: 'panelSegmentationWithToolsLabelMap',
       iconName: 'tab-segmentation',
-      iconLabel: 'Segmentation',
-      label: i18n.t('SegmentationPanel:Labelmap'),
+      iconLabel: 'SidePanel:Segmentation',
+      label: 'SegmentationPanel:Labelmap',
       component: props =>
         wrappedPanelSegmentationWithTools({
           ...props,
@@ -112,8 +111,8 @@ const getPanelModule = ({ commandsManager, servicesManager, extensionManager }: 
     {
       name: 'panelSegmentationWithToolsContour',
       iconName: 'tab-contours',
-      iconLabel: 'Segmentation',
-      label: i18n.t('SegmentationPanel:Contour'),
+      iconLabel: 'SidePanel:Segmentation',
+      label: 'SegmentationPanel:Contour',
       component: props =>
         wrappedPanelSegmentationWithTools({
           ...props,

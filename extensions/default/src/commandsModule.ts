@@ -28,6 +28,7 @@ import { useViewportsByPositionStore } from './stores/useViewportsByPositionStor
 import { useToggleOneUpViewportGridStore } from './stores/useToggleOneUpViewportGridStore';
 import requestDisplaySetCreationForStudy from './Panels/requestDisplaySetCreationForStudy';
 import promptSaveReport from './utils/promptSaveReport';
+import i18n from '@ohif/i18n';
 
 export type HangingProtocolParams = {
   protocolId?: string;
@@ -669,7 +670,7 @@ const commandsModule = ({
           displaySets,
           displaySetInstanceUID: defaultDisplaySetInstanceUID,
         },
-        title: 'DICOM Tag Browser',
+        title: i18n.t('DICOM Tag Browser', { ns: 'DicomTagBrowser' }),
         containerClassName: 'max-w-3xl',
       });
     },

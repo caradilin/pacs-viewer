@@ -6,11 +6,18 @@
   "NonTargets": "非靶向",
   "Relabel": "重新标记",
   "Measurements": "测量",
+  "Series Measurements": "序列测量",
+  "Tracked Measurements": "跟踪的测量",
   "Targets": "靶向",
   "Export CSV": "导出CSV",
   "No tracked measurements": "没有跟踪的测量值",
   "Export": "导出",
   "Create Report": "新建报告",
   "Do you want to add this measurement to the existing report?": "将测量添加到报告中？",
-  "Track measurements for this series?": "要对个序列进行跟踪吗？"
+  "Track measurements for this series?": "要对个序列进行跟踪吗？",
+  "Additional Findings": "额外发现",
+  "Study date": "检查日期",
+  "Series description": "序列描述",
+  "Window Level": "窗位",
+  "Instance Number": "实例号"
 }

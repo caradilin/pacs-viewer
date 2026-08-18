@@ -43,15 +43,15 @@ function getPanelModule({ commandsManager, extensionManager, servicesManager, co
     {
       name: 'dynamic-volume',
       iconName: 'tab-4d',
-      iconLabel: '4D Workflow',
-      label: '4D Workflow',
+      iconLabel: 'SidePanel:4D Workflow',
+      label: 'SidePanel:4D Workflow',
       component: wrappedDynamicDataPanel,
     },
     {
       name: 'dynamic-segmentation',
       iconName: 'tab-segmentation',
-      iconLabel: 'Segmentation',
-      label: 'Segmentation',
+      iconLabel: 'SidePanel:Segmentation',
+      label: 'SidePanel:Segmentation',
       component: wrappedDynamicSegmentation,
     },
   ];
