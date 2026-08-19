@@ -1,10 +1,11 @@
 // Updated ToolbarLayoutSelector.tsx
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { CommandsManager } from '@ohif/core';
 
 import { LayoutSelector } from '@ohif/ui-next';
 import { useTranslation } from 'react-i18next';
+import i18n from '@ohif/i18n';
 
 function ToolbarLayoutSelectorWithServices({
   commandsManager,
@@ -14,7 +15,42 @@ function ToolbarLayoutSelectorWithServices({
   ...props
 }) {
   const { customizationService } = servicesManager.services;
-  const { t } = useTranslation('ToolbarLayoutSelector');
+  const { t: defaultT, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  const translateText = useCallback(
+    (text: string, namespace?: string) => {
+      if (!text) {
+        return text;
+      }
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      if (namespace) {
+        return i18n.t(text, { ns: namespace, defaultValue: text });
+      }
+      return i18n.t(text, { defaultValue: text });
+    },
+    [lang]
+  );
+
+  const t = useCallback(
+    (key: string) => {
+      return translateText(key, 'ToolbarLayoutSelector');
+    },
+    [translateText]
+  );
 
   // Get the presets from the customization service
   const commonPresets = customizationService?.getCustomization('layoutSelector.commonPresets') || [
@@ -163,7 +199,7 @@ function ToolbarLayoutSelectorWithServices({
                   {advancedPresets.map((preset, index) => (
                     <LayoutSelector.Preset
                       key={`advanced-preset-${index}`}
-                      title={preset.title}
+                      title={t(preset.title)}
                       icon={preset.icon}
                       commandOptions={preset.commandOptions}
                       disabled={preset.disabled}

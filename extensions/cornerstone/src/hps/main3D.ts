@@ -1,9 +1,8 @@
 import { HYDRATE_SEG_SYNC_GROUP, VOI_SYNC_GROUP } from './mpr';
-import i18n from 'i18next';
 export const main3D = {
   id: 'main3D',
   locked: true,
-  name: i18n.t('Hps:3D main'),
+  name: 'Hps:3D main',
   icon: 'layout-advanced-3d-main',
   isPreset: true,
   createdDate: '2023-03-15T10:29:44.894Z',

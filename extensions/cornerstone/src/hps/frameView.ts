@@ -1,9 +1,8 @@
 import { Types } from '@ohif/core';
-import i18n from 'i18next';
 const frameView: Types.HangingProtocol.Protocol = {
   id: '@ohif/frameView',
-  description: i18n.t('Hps:Frame view for the active series'),
-  name: i18n.t('Hps:Frame View'),
+  description: 'Hps:Frame view for the active series',
+  name: 'Hps:Frame View',
   icon: 'tool-stack-scroll',
   isPreset: true,
   toolGroupIds: ['default'],

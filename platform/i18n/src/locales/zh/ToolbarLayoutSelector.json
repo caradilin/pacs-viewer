@@ -5,5 +5,12 @@
   "Custom": "自定义",
   "Hover to select": "悬停以选择",
   "rows and columns": "行和列",
-  "Click to apply": "点击应用"
+  "Click to apply": "点击应用",
+  "MPR": "多平面重建",
+  "3D four up": "3D四视图",
+  "3D main": "3D主视图",
+  "Axial Primary": "轴状面主视图",
+  "3D only": "仅3D视图",
+  "3D primary": "3D主视图",
+  "Frame View": "单帧视图"
 }
