@@ -116,6 +116,20 @@ const segmentAI = new ONNXSegmentationController({
   },
   modelName: 'sam_b',
 });
+
+// 兜底：模型未成功加载时（如无法访问模型服务器），避免 handleImage 读取
+// 未赋值的 config.encoder 而崩溃。此时直接跳过推理。
+{
+  const segmentAIInstance = segmentAI as any;
+  const originalHandleImage = segmentAIInstance.handleImage.bind(segmentAI);
+  segmentAIInstance.handleImage = async (imageData, imageSession) => {
+    if (!segmentAIInstance.config?.encoder) {
+      return;
+    }
+    return originalHandleImage(imageData, imageSession);
+  };
+}
+
 let segmentAIEnabled = false;
 
 function commandsModule({
@@ -1988,12 +2002,29 @@ function commandsModule({
     toggleLabelmapAssist: async () => {
       const { viewport } = _getActiveViewportEnabledElement();
       const newState = !segmentAI.enabled;
-      segmentAI.enabled = newState;
 
-      if (!segmentAIEnabled) {
+      if (newState && !segmentAIEnabled) {
+        // 首次启用：先加载 AI 分割模型
         await segmentAI.initModel();
+
+        // 模型加载失败（如模型服务器无法访问），回滚状态并提示，避免后续渲染时崩溃
+        const aiSession = (segmentAI as any).sessions?.[0];
+        if (!aiSession?.encoder || !aiSession?.decoder) {
+          segmentAI.enabled = false;
+          (segmentAI as any).loadingAI = null;
+          (segmentAI as any).sessions = [];
+          uiNotificationService.show({
+            title: i18n.t('SegmentationPanel:AI segmentation model failed to load'),
+            message: i18n.t('SegmentationPanel:Please check your network connection and try again'),
+            type: 'error',
+          });
+          return;
+        }
+
         segmentAIEnabled = true;
       }
+
+      segmentAI.enabled = newState;
 
       // set the brush tool to active
       const toolGroupIds = toolGroupService.getToolGroupIds();

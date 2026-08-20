@@ -1,9 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ScrollArea, DataRow } from '../../components';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '../../components/HoverCard';
 import { useSegmentationTableContext, useSegmentationExpanded } from './contexts';
 import { SegmentStatistics } from './SegmentStatistics';
 import { useDynamicMaxHeight } from '../../hooks/useDynamicMaxHeight';
+import i18n from '@ohif/i18n';
 
 export const SegmentationSegments = ({ children = null }: { children?: React.ReactNode }) => {
   const {
@@ -19,6 +21,93 @@ export const SegmentationSegments = ({ children = null }: { children?: React.Rea
     data,
     showSegmentIndex = true,
   } = useSegmentationTableContext('SegmentationSegments');
+
+  const { i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  // Listen for language changes to trigger re-render
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  // Dynamic translation function that handles namespace:key format
+  const translateText = useCallback(
+    (text: string) => {
+      if (!text) return text;
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return i18n.t(text, { defaultValue: text });
+    },
+    [lang]
+  );
+
+  // Translate displayText object (contains primary and secondary arrays)
+  const translateDisplayText = useCallback(
+    (displayText: { primary: string[]; secondary: string[] }) => {
+      if (!displayText) return displayText;
+      
+      // Known translation namespaces used in readableText
+      const knownNamespaces = ['SegmentationPanel', 'Buttons', 'Common'];
+      
+      const translateLine = (line: string): string => {
+        // Lines can be like:
+        //   "  SegmentationPanel:Min Value: 123.45" (with indentation, with value)
+        //   "SegmentationPanel:Min Value: 123.45" (without indentation, with value)
+        //   "  SegmentationPanel:Volume" (with indentation, without value - category title)
+        
+        const indentMatch = line.match(/^(\s*)(.*)/);
+        if (!indentMatch) return line;
+        
+        const indent = indentMatch[1];
+        const rest = indentMatch[2];
+        
+        if (!rest) return line;
+        
+        // Try to match the pattern "Namespace:Key: value" or "Namespace:Key"
+        // First, try to find a known namespace at the beginning
+        for (const ns of knownNamespaces) {
+          const prefix = `${ns}:`;
+          if (rest.startsWith(prefix)) {
+            // Found a known namespace
+            const remainingAfterNs = rest.slice(prefix.length);
+            // Now we have "Key: value" or "Key"
+            const keyValueMatch = remainingAfterNs.match(/^(.+?):\s*(.+)$/);
+            if (keyValueMatch) {
+              const key = keyValueMatch[1];
+              const value = keyValueMatch[2];
+              return `${indent}${translateText(`${ns}:${key}`)}: ${value}`;
+            }
+            // Just a key without value (category title)
+            return `${indent}${translateText(`${ns}:${remainingAfterNs}`)}`;
+          }
+        }
+        
+        // Fallback: try to match as simple "Key: value" or "Key"
+        const keyValueMatch = rest.match(/^(.+?):\s*(.+)$/);
+        if (keyValueMatch) {
+          const key = keyValueMatch[1];
+          const value = keyValueMatch[2];
+          return `${indent}${translateText(key)}: ${value}`;
+        }
+        
+        return `${indent}${translateText(rest)}`;
+      };
+      
+      return {
+        primary: displayText.primary?.map(translateLine) || [],
+        secondary: displayText.secondary?.map(translateLine) || [],
+      };
+    },
+    [lang, translateText]
+  );
 
   // Try to get segmentation data from expanded context first, then fall back to table context
   let segmentation;
@@ -140,8 +229,7 @@ export const SegmentationSegments = ({ children = null }: { children?: React.Rea
                 key={segmentIndex}
                 number={showSegmentIndex ? segmentIndex : null}
                 title={label}
-                // details={displayText}
-                description={displayText}
+                details={translateDisplayText(displayText)}
                 colorHex={cssColor}
                 // Primary selection only when part of the active segmentation
                 isSelected={active && isActiveSegmentation}

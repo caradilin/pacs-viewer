@@ -3,7 +3,6 @@ import { CustomSegmentStatisticsHeader } from './CustomSegmentStatisticsHeader';
 import SegmentationToolConfig from '../components/SegmentationToolConfig';
 import React from 'react';
 import { SegmentationRepresentations } from '@cornerstonejs/tools/enums';
-import i18n from '@ohif/i18n';
 
 export default function getSegmentationPanelCustomization({ commandsManager, servicesManager }) {
   const { segmentationService } = servicesManager.services;
@@ -94,21 +93,22 @@ export default function getSegmentationPanelCustomization({ commandsManager, ser
     'panelSegmentation.tableMode': 'collapsed',
     'panelSegmentation.readableText': {
       // the values will appear in this order
-      min: i18n.t('SegmentationPanel:Min Value'),
-      minLPS: i18n.t('SegmentationPanel:Min Coord'),
-      max: i18n.t('SegmentationPanel:Max Value'),
-      maxLPS: i18n.t('SegmentationPanel:Max Coord'),
-      mean: i18n.t('SegmentationPanel:Mean Value'),
-      stdDev: i18n.t('SegmentationPanel:Standard Deviation'),
-      count: i18n.t('SegmentationPanel:Voxel Count'),
-      median: i18n.t('SegmentationPanel:Median'),
-      skewness: i18n.t('SegmentationPanel:Skewness'),
-      kurtosis: i18n.t('SegmentationPanel:Kurtosis'),
-      peakValue: i18n.t('SegmentationPanel:Peak Value'),
-      peakLPS: i18n.t('SegmentationPanel:Peak Coord'),
-      volume: i18n.t('SegmentationPanel:Volume'),
-      lesionGlycolysis: i18n.t('SegmentationPanel:Lesion Glycolysis'),
-      center: i18n.t('SegmentationPanel:Center'),
+      // Using translation keys instead of pre-translated text to support dynamic language switching
+      min: 'SegmentationPanel:Min Value',
+      minLPS: 'SegmentationPanel:Min Coord',
+      max: 'SegmentationPanel:Max Value',
+      maxLPS: 'SegmentationPanel:Max Coord',
+      mean: 'SegmentationPanel:Mean Value',
+      stdDev: 'SegmentationPanel:Standard Deviation',
+      count: 'SegmentationPanel:Voxel Count',
+      median: 'SegmentationPanel:Median',
+      skewness: 'SegmentationPanel:Skewness',
+      kurtosis: 'SegmentationPanel:Kurtosis',
+      peakValue: 'SegmentationPanel:Peak Value',
+      peakLPS: 'SegmentationPanel:Peak Coord',
+      volume: 'SegmentationPanel:Volume',
+      lesionGlycolysis: 'SegmentationPanel:Lesion Glycolysis',
+      center: 'SegmentationPanel:Center',
     },
     'labelMapSegmentationToolbox.config': () => {
       return <SegmentationToolConfig />;

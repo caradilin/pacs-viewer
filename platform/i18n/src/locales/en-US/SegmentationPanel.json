@@ -84,5 +84,8 @@
   "Peak Coord": "Peak Coord",
   "Volume": "Volume",
   "Lesion Glycolysis": "Lesion Glycolysis",
-  "Center": "Center"
+  "Center": "Center",
+  "Bidirectional": "Bidirectional",
+  "AI segmentation model failed to load": "AI segmentation model failed to load",
+  "Please check your network connection and try again": "Please check your network connection and try again"
 }

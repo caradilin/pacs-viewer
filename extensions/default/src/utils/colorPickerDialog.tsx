@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { ChromePicker } from 'react-color';
 import { FooterAction } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 
 import './colorPickerDialog.css';
 
 function ColorPickerDialog({ value, hide, onSave }) {
   const [color, setColor] = useState(value);
+  const { t } = useTranslation('Buttons');
 
   const handleChange = color => {
     setColor(color.rgb);
@@ -25,7 +27,7 @@ function ColorPickerDialog({ value, hide, onSave }) {
             dataCY="color-picker-cancel-btn"
             onClick={hide}
           >
-            Cancel
+            {t('Cancel')}
           </FooterAction.Secondary>
           <FooterAction.Primary
             dataCY="color-picker-save-btn"
@@ -34,7 +36,7 @@ function ColorPickerDialog({ value, hide, onSave }) {
               onSave(color);
             }}
           >
-            Save
+            {t('Save')}
           </FooterAction.Primary>
         </FooterAction.Right>
       </FooterAction>

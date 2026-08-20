@@ -96,7 +96,7 @@ export async function updateSegmentationStats({
         if (segmentStats.volume && !namedStats.volume) {
           namedStats.volume = {
             name: 'volume',
-            label: 'Volume',
+            label: readableText.volume,
             value: segmentStats.volume.value,
             unit: segmentStats.volume.unit,
             order: Object.keys(readableText).indexOf('volume'),
@@ -170,7 +170,7 @@ export function updateSegmentBidirectionalStats({
   if (maxMajor > 0 && maxMinor > 0) {
     namedStats.bidirectional = {
       name: 'bidirectional',
-      label: 'Bidirectional',
+      label: 'SegmentationPanel:Bidirectional',
       annotationUID: annotation.annotationUID,
       value: {
         maxMajor,

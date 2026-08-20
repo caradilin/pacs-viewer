@@ -84,5 +84,8 @@
   "Peak Coord": "峰值坐标",
   "Volume": "体积",
   "Lesion Glycolysis": "病灶糖酵解",
-  "Center": "中心"
+  "Center": "中心",
+  "Bidirectional": "双向",
+  "AI segmentation model failed to load": "AI 分割模型加载失败",
+  "Please check your network connection and try again": "请检查网络连接后重试"
 }

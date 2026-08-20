@@ -3,6 +3,7 @@ import { setAnnotationLabel } from '@cornerstonejs/tools/utilities';
 import { annotation } from '@cornerstonejs/tools';
 import { LabellingFlow } from '@ohif/ui-next';
 import { InputDialog } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 
 interface InputDialogDefaultProps {
   hide: () => void;
@@ -19,6 +20,8 @@ function InputDialogDefault({
   defaultValue = '',
   submitOnEnter,
 }: InputDialogDefaultProps) {
+  const { t } = useTranslation('Buttons');
+
   return (
     <InputDialog
       submitOnEnter={submitOnEnter}
@@ -28,14 +31,14 @@ function InputDialogDefault({
         <InputDialog.Input placeholder={placeholder} />
       </InputDialog.Field>
       <InputDialog.Actions>
-        <InputDialog.ActionsSecondary onClick={hide}>Cancel</InputDialog.ActionsSecondary>
+        <InputDialog.ActionsSecondary onClick={hide}>{t('Cancel')}</InputDialog.ActionsSecondary>
         <InputDialog.ActionsPrimary
           onClick={value => {
             onSave(value);
             hide();
           }}
         >
-          Save
+          {t('Save')}
         </InputDialog.ActionsPrimary>
       </InputDialog.Actions>
     </InputDialog>

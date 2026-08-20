@@ -1,10 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SegmentStatisticsProvider, useSegmentStatistics } from './contexts';
 import { roundNumber } from '../../utils';
+import i18n from '@ohif/i18n';
 
 // Default statistics component
 const DefaultStatsList = () => {
   const { namedStats } = useSegmentStatistics('DefaultStatsList');
+  const { t: defaultT, i18n: i18nextInstance } = useTranslation();
+  const [lang, setLang] = useState(i18nextInstance?.language || i18n.language);
+
+  // Listen for language changes to trigger re-render
+  useEffect(() => {
+    const handleLanguageChanged = () => {
+      setLang(i18n.language);
+    };
+    i18n.on('languageChanged', handleLanguageChanged);
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, []);
+
+  // Dynamic translation function that handles namespace:key format
+  const translateText = useCallback(
+    (text: string) => {
+      if (!text) return text;
+      if (text.includes(':')) {
+        const [ns, key] = text.split(':');
+        return i18n.t(key, { ns, defaultValue: key });
+      }
+      return i18n.t(text, { defaultValue: text });
+    },
+    [lang]
+  );
 
   if (!namedStats) {
     return null;
@@ -41,7 +69,7 @@ const DefaultStatsList = () => {
             key={key}
             className="flex justify-between"
           >
-            <div>{label}</div>
+            <div>{translateText(label)}</div>
             <div>
               <span className="text-foreground">{handleNumber(value)}</span>{' '}
               <span className="">{unit && unit !== 'none' ? unit : ''}</span>
