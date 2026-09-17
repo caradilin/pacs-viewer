@@ -27,7 +27,6 @@
     "dev:orthanc": "pnpm --filter @ohif/app run dev:orthanc",
     "dev:orthanc:no:cache": "pnpm --filter @ohif/app run dev:orthanc:no:cache",
     "dev:dcm4chee": "pnpm --filter @ohif/app run dev:dcm4chee",
-    "dev:pacs": "pnpm --filter @ohif/app run dev:pacs",
     "dev:static": "pnpm --filter @ohif/app run dev:static",
     "orthanc:up": "docker compose -f platform/app/.recipes/Nginx-Orthanc/docker-compose.yml up",
     "install:update-lockfile": "pnpm install --no-frozen-lockfile",
