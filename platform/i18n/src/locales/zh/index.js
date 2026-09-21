@@ -29,6 +29,7 @@ import DataTable from './DataTable.json';
 import AppearanceModal from './AppearanceModal.json';
 import SegmentationPanel from './SegmentationPanel.json';
 import DicomTagBrowser from './DicomTagBrowser.json';
+import DicomUpload from './DicomUpload.json';
 import ROIThresholdConfiguration from './ROIThresholdConfiguration.json';
 import DynamicVolume from './DynamicVolume.json';
 import Workflow from './Workflow.json';
@@ -68,6 +69,7 @@ export default {
     AppearanceModal,
     SegmentationPanel,
     DicomTagBrowser,
+    DicomUpload,
     ROIThresholdConfiguration,
     DynamicVolume,
     Workflow,

@@ -35,6 +35,7 @@ import ROIThresholdConfiguration from './ROIThresholdConfiguration.json';
 import USAnnotationPanel from './USAnnotationPanel.json';
 import InvestigationalUseDialog from './InvestigationalUseDialog.json';
 import DicomTagBrowser from './DicomTagBrowser.json';
+import DicomUpload from './DicomUpload.json';
 import DynamicVolume from './DynamicVolume.json';
 import Workflow from './Workflow.json';
 import WorkflowSteps from './WorkflowSteps.json';
@@ -78,6 +79,7 @@ export default {
     USAnnotationPanel,
     InvestigationalUseDialog,
     DicomTagBrowser,
+    DicomUpload,
     DynamicVolume,
     Workflow,
     WorkflowSteps,

@@ -21,6 +21,7 @@ import {
 
 import { cn } from '../../lib/utils';
 import { Button, buttonVariants } from '../Button';
+import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 
 const LOCALE_MAP: Record<string, Locale> = {
   en: enUS,
@@ -190,6 +191,7 @@ function Calendar({
             />
           );
         },
+        Dropdown: CalendarDropdown,
         DayButton: CalendarDayButton,
         WeekNumber: ({ children, ...props }) => {
           return (
@@ -204,6 +206,96 @@ function Calendar({
       }}
       {...props}
     />
+  );
+}
+
+type CalendarDropdownOption = {
+  value: number;
+  label: string;
+  disabled: boolean;
+};
+
+/**
+ * Themed replacement for react-day-picker's default Dropdown, whose native
+ * `<select>` popup always renders with the browser (light) styling and thus
+ * clashes with the dark theme.
+ */
+function CalendarDropdown({
+  value,
+  onChange,
+  options,
+  disabled,
+  'aria-label': ariaLabel,
+}: {
+  value?: string | number | readonly string[];
+  onChange?: React.ChangeEventHandler<HTMLSelectElement>;
+  options?: CalendarDropdownOption[];
+  disabled?: boolean;
+  'aria-label'?: string;
+}) {
+  const [open, setOpen] = React.useState(false);
+  const selectedRef = React.useRef<HTMLButtonElement>(null);
+
+  const selectedOption = options?.find(option => String(option.value) === String(value));
+
+  // Keep the same UX as the native select: opening jumps to the selected option.
+  React.useEffect(() => {
+    if (open) {
+      selectedRef.current?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [open]);
+
+  const handleSelect = (optionValue: number) => {
+    // react-day-picker reads the next month/year from `event.target.value`.
+    const syntheticEvent = {
+      target: { value: String(optionValue) },
+    } as unknown as React.ChangeEvent<HTMLSelectElement>;
+    onChange?.(syntheticEvent);
+    setOpen(false);
+  };
+
+  return (
+    <Popover
+      open={open}
+      onOpenChange={setOpen}
+    >
+      <PopoverTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          disabled={disabled}
+          aria-label={ariaLabel}
+          aria-haspopup="listbox"
+          className="border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 justify-between gap-1 rounded-md border px-2 text-sm font-medium"
+        >
+          <span className="truncate">{selectedOption?.label ?? String(value ?? '')}</span>
+          <ChevronDownIcon className="size-3.5 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent
+        className="w-[var(--radix-popover-trigger-width)] p-1"
+        align="start"
+      >
+        <div className="invisible-scrollbar max-h-60 overflow-auto">
+          {options?.map(option => (
+            <Button
+              key={option.value}
+              ref={String(value) === String(option.value) ? selectedRef : undefined}
+              variant="ghost"
+              size="sm"
+              disabled={option.disabled}
+              className={cn(
+                'w-full justify-start text-left font-normal',
+                String(value) === String(option.value) && 'bg-accent text-accent-foreground'
+              )}
+              onClick={() => handleSelect(option.value)}
+            >
+              {option.label}
+            </Button>
+          ))}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
 

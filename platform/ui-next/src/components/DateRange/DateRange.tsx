@@ -25,6 +25,10 @@ export function DatePickerWithRange({
   ...props
 }: React.HTMLAttributes<HTMLDivElement> & DatePickerWithRangeProps) {
   const { t } = useTranslation('DatePicker');
+  // Limit the year dropdown (and month navigation) to the last 30 years up to the current year.
+  const currentYear = new Date().getFullYear();
+  const navStartMonth = new Date(currentYear - 30, 0);
+  const navEndMonth = new Date(currentYear, 11);
   const [start, setStart] = React.useState<string>(
     startDate ? format(parse(startDate, 'yyyyMMdd', new Date()), 'yyyy-MM-dd') : ''
   );
@@ -94,7 +98,7 @@ export function DatePickerWithRange({
               value={start}
               onChange={e => handleInputChange(e, 'start')}
               className={cn(
-                'border-input focus:border-ring hover:text-foreground placeholder:text-muted-foreground h-7 w-full justify-start rounded border bg-background pl-1.5 pr-0.5 py-1 text-left text-base font-normal hover:bg-background'
+                'border-input focus:border-ring hover:text-foreground placeholder:text-muted-foreground bg-background hover:bg-background h-7 w-full justify-start rounded border py-1 pl-1.5 pr-0.5 text-left text-base font-normal'
               )}
               data-cy="input-date-range-start"
             />
@@ -111,8 +115,8 @@ export function DatePickerWithRange({
             defaultMonth={start ? parse(start, 'yyyy-MM-dd', new Date()) : new Date()}
             selected={start ? parse(start, 'yyyy-MM-dd', new Date()) : undefined}
             onSelect={handleStartSelect}
-            startMonth={new Date(1900, 0)}
-            endMonth={new Date(new Date().getFullYear() + 1, 11)}
+            startMonth={navStartMonth}
+            endMonth={navEndMonth}
             numberOfMonths={1}
           />
         </Popover.PopoverContent>
@@ -135,7 +139,7 @@ export function DatePickerWithRange({
               value={end}
               onChange={e => handleInputChange(e, 'end')}
               className={cn(
-                'border-input focus:border-ring hover:text-foreground placeholder:text-muted-foreground h-7 w-full justify-start rounded border bg-background pl-1.5 pr-0.5 py-1 text-left text-base font-normal hover:bg-background'
+                'border-input focus:border-ring hover:text-foreground placeholder:text-muted-foreground bg-background hover:bg-background h-7 w-full justify-start rounded border py-1 pl-1.5 pr-0.5 text-left text-base font-normal'
               )}
               data-cy="input-date-range-end"
             />
@@ -152,8 +156,8 @@ export function DatePickerWithRange({
             defaultMonth={start ? parse(start, 'yyyy-MM-dd', new Date()) : new Date()}
             selected={end ? parse(end, 'yyyy-MM-dd', new Date()) : undefined}
             onSelect={handleEndSelect}
-            startMonth={new Date(1900, 0)}
-            endMonth={new Date(new Date().getFullYear() + 1, 11)}
+            startMonth={navStartMonth}
+            endMonth={navEndMonth}
             numberOfMonths={1}
           />
         </Popover.PopoverContent>

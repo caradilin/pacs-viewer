@@ -285,7 +285,10 @@ const getInstanceNumber = (viewportData, viewportId, imageIndex, cornerstoneView
       break;
   }
 
-  return instanceNumber ?? null;
+  if (instanceNumber == null || Number.isNaN(instanceNumber)) {
+    return null;
+  }
+  return instanceNumber;
 };
 
 function _getInstanceNumberFromStack(viewportData, imageIndex) {

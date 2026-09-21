@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useSystem } from '@ohif/core';
 import { Button } from '@ohif/ui-next';
 import { Icons } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 import DicomFileUploader, {
   EVENTS,
   UploadStatus,
@@ -42,6 +43,7 @@ function DicomUploadProgress({
   onComplete,
 }: DicomUploadProgressProps): ReactElement {
   const { servicesManager } = useSystem();
+  const { t } = useTranslation('DicomUpload');
 
   const ProgressLoadingBar =
     servicesManager.services.customizationService.getCustomization('ui.progressLoadingBar');
@@ -229,16 +231,16 @@ function DicomUploadProgress({
 
     if (timeRemaining < ONE_MINUTE) {
       const secondsRemaining = Math.ceil(timeRemaining / ONE_SECOND);
-      return `${secondsRemaining} ${secondsRemaining === 1 ? 'second' : 'seconds'}`;
+      return `${secondsRemaining} ${secondsRemaining === 1 ? t('second') : t('seconds')}`;
     }
 
     if (timeRemaining < ONE_HOUR) {
       const minutesRemaining = Math.ceil(timeRemaining / ONE_MINUTE);
-      return `${minutesRemaining} ${minutesRemaining === 1 ? 'minute' : 'minutes'}`;
+      return `${minutesRemaining} ${minutesRemaining === 1 ? t('minute') : t('minutes')}`;
     }
 
     const hoursRemaining = Math.ceil(timeRemaining / ONE_HOUR);
-    return `${hoursRemaining} ${hoursRemaining === 1 ? 'hour' : 'hours'}`;
+    return `${hoursRemaining} ${hoursRemaining === 1 ? t('hour') : t('hours')}`;
   }, [timeRemaining]);
 
   const getPercentCompleteRounded = useCallback(
@@ -280,14 +282,14 @@ function DicomUploadProgress({
         {numFilesCompleted === dicomFileUploaderArr.length ? (
           <>
             <span className={NO_WRAP_ELLIPSIS_CLASS_NAMES}>{`${dicomFileUploaderArr.length} ${
-              dicomFileUploaderArr.length > 1 ? 'files' : 'file'
-            } completed.`}</span>
+              dicomFileUploaderArr.length > 1 ? t('files') : t('file')
+            } ${t('completed.')}`}</span>
             <Button
               disabled={false}
               className="ml-auto"
               onClick={onComplete}
             >
-              {'Close'}
+              {t('Close')}
             </Button>
           </>
         ) : (
@@ -299,10 +301,12 @@ function DicomUploadProgress({
               >
                 {`${numFilesCompleted} of ${dicomFileUploaderArr.length}`}&nbsp;
               </span>
-              <span className={NO_WRAP_ELLIPSIS_CLASS_NAMES}>{' files completed.'}</span>
+              <span className={NO_WRAP_ELLIPSIS_CLASS_NAMES}>{` ${t('files completed.')}`}</span>
               <br />
               <span>
-                {timeRemaining ? `Less than ${getFormattedTimeRemaining()} remaining. ` : ''}
+                {timeRemaining
+                  ? `${t('Less than')} ${getFormattedTimeRemaining()} ${t('remaining.')} `
+                  : ''}
               </span>
             </div>
 
@@ -312,7 +316,7 @@ function DicomUploadProgress({
               }
               onClick={cancelAllUploads}
             >
-              Cancel All Uploads
+              {t('Cancel All Uploads')}
             </span>
           </>
         )}
@@ -343,8 +347,8 @@ function DicomUploadProgress({
             <>
               <div className="text-highlight text-xl">
                 {numFails > 0
-                  ? `Completed with ${numFails} ${numFails > 1 ? 'errors' : 'error'}!`
-                  : 'Completed!'}
+                  ? `${t('Completed with')} ${numFails} ${numFails > 1 ? t('errors') : t('error')}!`
+                  : t('Completed!')}
               </div>
               {getShowFailedOnlyIconComponent()}
             </>
@@ -372,7 +376,7 @@ function DicomUploadProgress({
   return (
     <div className="flex grow flex-col">
       {getNumCompletedAndTimeRemainingComponent()}
-      <div className="flex grow flex-col overflow-hidden bg-background text-lg">
+      <div className="bg-background flex grow flex-col overflow-hidden text-lg">
         {getPercentCompleteComponent()}
         <div className="ohif-scrollbar h-1 grow overflow-y-scroll px-2">
           {dicomFileUploaderArr

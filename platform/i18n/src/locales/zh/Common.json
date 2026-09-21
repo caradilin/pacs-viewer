@@ -99,5 +99,6 @@
   "This structured report is not compatible with this application.": "此结构化报告与当前应用程序不兼容。",
   "This structured report is currently read-only because you are tracking measurements in another viewport.": "此结构化报告当前为只读状态，因为您正在另一个视口中跟踪测量值。",
   "Click {{loadStr}} to restore measurements.": "点击 {{loadStr}} 以恢复测量值。",
-  "Read more...": "展开查看更多..."
+  "Read more...": "展开查看更多...",
+  "No image data available for this study": "该检查无影像数据"
 }

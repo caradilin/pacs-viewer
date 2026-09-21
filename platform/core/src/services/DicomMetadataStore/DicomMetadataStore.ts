@@ -208,6 +208,9 @@ const BaseImplementation = {
     study.addInstanceToSeries(naturalizedDataset);
   },
   addInstances(instances, madeInClient = false) {
+    if (!instances || !instances.length || !instances[0]) {
+      return;
+    }
     const { StudyInstanceUID, SeriesInstanceUID, NumberOfFrames } = instances[0];
     // For multiframe images (NumberOfFrames > 1), wrap each instance with a metadata proxy
     // to enable fallback access for key image plane fields. This allows fields like

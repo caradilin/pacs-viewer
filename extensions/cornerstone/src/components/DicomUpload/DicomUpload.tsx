@@ -3,6 +3,7 @@ import { ReactElement } from 'react';
 import Dropzone from 'react-dropzone';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useTranslation } from 'react-i18next';
 import DicomFileUploader from '../../utils/DicomFileUploader';
 import DicomUploadProgress from './DicomUploadProgress';
 import { Button } from '@ohif/ui-next';
@@ -15,6 +16,7 @@ type DicomUploadProps = {
 };
 
 function DicomUpload({ dataSource, onComplete, onStarted }: DicomUploadProps): ReactElement {
+  const { t } = useTranslation('DicomUpload');
   const baseClassNames =
     'min-h-[375px] flex flex-col bg-background select-none rounded-lg overflow-hidden';
   const [dicomFileUploaderArr, setDicomFileUploaderArr] = useState([]);
@@ -51,7 +53,7 @@ function DicomUpload({ dataSource, onComplete, onStarted }: DicomUploadProps): R
                       disabled={false}
                       onClick={() => {}}
                     >
-                      {'Add files'}
+                      {t('Add files')}
                       <input
                         {...getInputProps()}
                         style={{ display: 'none' }}
@@ -72,7 +74,7 @@ function DicomUpload({ dataSource, onComplete, onStarted }: DicomUploadProps): R
                       disabled={false}
                       onClick={() => {}}
                     >
-                      {'Add folder'}
+                      {t('Add folder')}
                       <input
                         {...getInputProps()}
                         webkitdirectory="true"
@@ -84,8 +86,12 @@ function DicomUpload({ dataSource, onComplete, onStarted }: DicomUploadProps): R
                 )}
               </Dropzone>
             </div>
-            <div className="text-foreground pt-6 text-base">or drag images or folders here</div>
-            <div className="text-muted-foreground pt-1 text-base">(DICOM files supported)</div>
+            <div className="text-foreground pt-6 text-base">
+              {t('or drag images or folders here')}
+            </div>
+            <div className="text-muted-foreground pt-1 text-base">
+              {t('(DICOM files supported)')}
+            </div>
           </div>
         )}
       </Dropzone>

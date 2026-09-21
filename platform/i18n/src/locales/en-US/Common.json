@@ -34,5 +34,6 @@
   "This structured report is not compatible with this application.": "This structured report is not compatible with this application.",
   "This structured report is currently read-only because you are tracking measurements in another viewport.": "This structured report is currently read-only because you are tracking measurements in another viewport.",
   "Click {{loadStr}} to restore measurements.": "Click {{loadStr}} to restore measurements.",
-  "Read more...": "Read more..."
+  "Read more...": "Read more...",
+  "No image data available for this study": "No image data available for this study"
 }
