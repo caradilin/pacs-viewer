@@ -696,6 +696,28 @@ function createDicomWebApi(dicomWebConfig: DicomWebConfig, servicesManager) {
       DicomMetadataStore.addSeriesMetadata(seriesSummaryMetadata, madeInClient);
 
       let completedSeriesCount = 0;
+      let emptySeriesCount = 0;
+      let emptyMetadataNotified = false;
+
+      // When every series of the study delivered an empty metadata array (or the
+      // study has no series at all), broadcast STUDY_METADATA_EMPTY so the UI
+      // closes the loading indicator immediately and renders an empty state.
+      // With no displaySets the hanging protocol would never run anyway
+      // (applyHangingProtocol returns early), so without this the loading
+      // indicator would stay visible forever.
+      function notifyIfNoSeriesData() {
+        if (emptyMetadataNotified) {
+          return;
+        }
+        if (emptySeriesCount === seriesPromises.length) {
+          emptyMetadataNotified = true;
+          DicomMetadataStore._broadcastEvent(DicomMetadataStore.EVENTS.STUDY_METADATA_EMPTY, {
+            StudyInstanceUID,
+            madeInClient,
+          });
+        }
+      }
+
       const seriesDeliveredPromises = seriesPromises.map(promise => {
         let deliveredPromise;
 
@@ -707,6 +729,14 @@ function createDicomWebApi(dicomWebConfig: DicomWebConfig, servicesManager) {
                 await storeInstances(instances);
 
                 completedSeriesCount++;
+                if (!instances || !instances.length) {
+                  emptySeriesCount++;
+                }
+
+                if (completedSeriesCount === seriesPromises.length) {
+                  notifyIfNoSeriesData();
+                }
+
                 if (returnPromises && completedSeriesCount === seriesPromises.length) {
                   setSuccessFlag();
                 }
@@ -723,6 +753,7 @@ function createDicomWebApi(dicomWebConfig: DicomWebConfig, servicesManager) {
       if (returnPromises) {
         if (!seriesDeliveredPromises.length) {
           setSuccessFlag();
+          notifyIfNoSeriesData();
         }
 
         // The route starts only the series required by the hanging protocol,
@@ -734,6 +765,7 @@ function createDicomWebApi(dicomWebConfig: DicomWebConfig, servicesManager) {
       } else {
         await Promise.all(seriesDeliveredPromises.map(promise => promise.start()));
         setSuccessFlag();
+        notifyIfNoSeriesData();
       }
 
       return seriesSummaryMetadata;

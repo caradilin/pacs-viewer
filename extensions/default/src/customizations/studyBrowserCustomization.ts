@@ -55,6 +55,22 @@ export default {
           let updatedViewports = [];
           const viewportId = activeViewportId;
 
+          // No active viewport (e.g. the hanging protocol has not been applied
+          // yet or nothing matched the study) - dispatching a viewport update
+          // without a viewportId would throw inside the grid reducer and crash
+          // the app.
+          if (!viewportId) {
+            uiNotificationService.show({
+              title: i18n.t('StudyBrowser:Thumbnail Double Click'),
+              message: i18n.t(
+                'StudyBrowser:There is no active viewport to display the selected series.'
+              ),
+              type: 'info',
+              duration: 3000,
+            });
+            return;
+          }
+
           try {
             updatedViewports = hangingProtocolService.getViewportsRequireUpdate(
               viewportId,

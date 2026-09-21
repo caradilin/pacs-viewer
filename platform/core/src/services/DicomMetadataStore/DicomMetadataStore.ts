@@ -9,6 +9,10 @@ const EVENTS = {
   INSTANCES_ADDED: 'event::dicomMetadataStore:instancesAdded',
   SERIES_ADDED: 'event::dicomMetadataStore:seriesAdded',
   SERIES_UPDATED: 'event::dicomMetadataStore:seriesUpdated',
+  // Fired when a study's series metadata retrieval completed with no instance
+  // metadata at all (every series returned an empty metadata array). UI layers
+  // use this to close the loading indicator and render an empty state.
+  STUDY_METADATA_EMPTY: 'event::dicomMetadataStore:studyMetadataEmpty',
 };
 
 /**

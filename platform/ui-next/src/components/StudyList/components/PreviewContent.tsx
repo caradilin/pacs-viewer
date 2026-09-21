@@ -118,7 +118,7 @@ function PreviewContent({
                         : undefined;
                     return (
                       <Thumbnail
-                        key={`series-imaging-${seriesUID}`}
+                        key={`series-imaging-${seriesUID}-${index}`}
                         displaySetInstanceUID={`series-${seriesUID}`}
                         imageSrc={imageSrc as any}
                         onImageLoadError={() => onThumbnailImageError?.(seriesUID)}
@@ -153,7 +153,7 @@ function PreviewContent({
                       seriesItem.seriesInstanceUid || seriesItem.SeriesInstanceUID || String(index);
                     return (
                       <Thumbnail
-                        key={`series-non-imaging-${seriesUID}`}
+                        key={`series-non-imaging-${seriesUID}-${index}`}
                         displaySetInstanceUID={`series-${seriesUID}`}
                         imageAltText={seriesItem.description || seriesItem.SeriesDescription || ''}
                         description={

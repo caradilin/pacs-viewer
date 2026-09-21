@@ -61,7 +61,7 @@ export function Table({
     <DataTable<StudyRow>
       data={data}
       columns={columns}
-      getRowId={row => row.studyInstanceUid}
+      getRowId={(row, index) => `${row.studyInstanceUid}-${index}`}
       initialVisibility={initialVisibility}
       sorting={sorting}
       pagination={pagination}

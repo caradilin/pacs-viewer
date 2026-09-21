@@ -117,7 +117,7 @@ export function WorkflowsProvider({
         },
         launchWithStudy: (studyRow: StudyRow) => {
           if (!studyRow.studyInstanceUid) {
-            console.warn('Cannot launch workflow: study has no studyInstanceUid');
+            console.warn(t('StudyList:Cannot launch workflow: study has no studyInstanceUid'));
             return;
           }
 

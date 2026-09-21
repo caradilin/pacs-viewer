@@ -44,7 +44,7 @@ export function PreviewSeriesList({ series, onSeriesClick }: PreviewSeriesListPr
 
             return (
               <TableRow
-                key={seriesUID}
+                key={`${seriesUID}-${idx}`}
                 className="hover:text-muted-foreground cursor-default hover:bg-transparent"
               >
                 <TableCell className="pl-0 text-base">

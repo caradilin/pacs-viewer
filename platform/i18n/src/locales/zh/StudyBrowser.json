@@ -9,6 +9,7 @@
   "Series Date": "序列时间",
   "Thumbnail Double Click": "缩略图双击",
   "The selected display sets could not be added to the viewport.": "所选显示集无法添加到视图端口。",
+  "There is no active viewport to display the selected series.": "当前没有可用于显示所选序列的激活视口。",
   "Apply Hanging Protocol": "应用悬挂协议",
   "Default": "默认",
   "2x2 Grid": "2x2 网格",

@@ -35,5 +35,9 @@
   "This structured report is currently read-only because you are tracking measurements in another viewport.": "This structured report is currently read-only because you are tracking measurements in another viewport.",
   "Click {{loadStr}} to restore measurements.": "Click {{loadStr}} to restore measurements.",
   "Read more...": "Read more...",
-  "No image data available for this study": "No image data available for this study"
+  "No image data available for this study": "No image data available for this study",
+  "One or more of the requested studies are not available at this time.": "One or more of the requested studies are not available at this time.",
+  "Return to the": "Return to the",
+  "study list": "study list",
+  "to select a different study to view.": "to select a different study to view."
 }

@@ -72,5 +72,6 @@
   "Column Settings": "Column Settings",
   "View Options": "View Options",
   "Columns": "Columns",
-  "Actions": "Actions"
+  "Actions": "Actions",
+  "Cannot launch workflow: study has no studyInstanceUid": "Cannot launch workflow: study has no studyInstanceUid"
 }

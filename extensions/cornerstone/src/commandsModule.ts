@@ -1818,9 +1818,24 @@ function commandsModule({
     },
     setDisplaySetsForViewports: ({ viewportsToUpdate }) => {
       const { cineService, viewportGridService } = servicesManager.services;
+      // A viewport update without a viewportId (e.g. a null activeViewportId when
+      // no hanging protocol layout has been applied yet) would throw inside the
+      // grid reducer ('ViewportId is required ...') and crash the app - skip those.
+      const validViewportsToUpdate = viewportsToUpdate.filter(viewport => {
+        if (viewport?.viewportId) {
+          return true;
+        }
+        console.warn('Skipping a viewport update without a viewportId');
+        return false;
+      });
+
+      if (!validViewportsToUpdate.length) {
+        return;
+      }
+
       // Stopping the cine of modified viewports before changing the viewports to
       // avoid inconsistent state and lost references
-      viewportsToUpdate.forEach(viewport => {
+      validViewportsToUpdate.forEach(viewport => {
         const state = cineService.getState();
         const currentCineState = state.cines?.[viewport.viewportId];
         cineService.setCine({
@@ -1830,7 +1845,7 @@ function commandsModule({
         });
       });
 
-      viewportGridService.setDisplaySetsForViewports(viewportsToUpdate);
+      viewportGridService.setDisplaySetsForViewports(validViewportsToUpdate);
     },
     undo: () => {
       DefaultHistoryMemo.undo();

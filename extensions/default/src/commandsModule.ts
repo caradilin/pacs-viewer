@@ -723,7 +723,14 @@ const commandsModule = ({
       const { activeViewportId, viewports, isHangingProtocolLayout } =
         viewportGridService.getState();
 
-      const { displaySetInstanceUIDs } = viewports.get(activeViewportId);
+      const activeViewport = viewports.get(activeViewportId);
+
+      // No active viewport (e.g. nothing was hung yet) - nothing to update
+      if (!activeViewport) {
+        return;
+      }
+
+      const { displaySetInstanceUIDs } = activeViewport;
 
       const activeDisplaySetIndex = currentDisplaySets.findIndex(displaySet =>
         displaySetInstanceUIDs.includes(displaySet.displaySetInstanceUID)

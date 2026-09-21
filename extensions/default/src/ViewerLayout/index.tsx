@@ -2,8 +2,9 @@ import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { InvestigationalUseDialog } from '@ohif/ui-next';
-import { HangingProtocolService, CommandsManager } from '@ohif/core';
+import { DicomMetadataStore, HangingProtocolService, CommandsManager } from '@ohif/core';
 import { useAppConfig } from '@state';
+import { useTranslation } from 'react-i18next';
 import ViewerHeader from './ViewerHeader';
 import SidePanelWithServices from '../Components/SidePanelWithServices';
 import { Onboarding, ResizablePanelGroup, ResizablePanel, ResizableHandle } from '@ohif/ui-next';
@@ -30,9 +31,14 @@ function ViewerLayout({
   rightPanelMinimumExpandedWidth,
 }: withAppTypes): React.FunctionComponent {
   const [appConfig] = useAppConfig();
+  const { t } = useTranslation('Common');
 
   const { panelService, hangingProtocolService, customizationService } = servicesManager.services;
   const [showLoadingIndicator, setShowLoadingIndicator] = useState(appConfig.showLoadingIndicator);
+  // True when the study's series metadata retrieval returned no data at all:
+  // the loading indicator is closed immediately and the viewport grid area
+  // shows an empty state, while the side panels keep loading normally.
+  const [showNoDataOverlay, setShowNoDataOverlay] = useState(false);
 
   const hasPanels = useCallback(
     (side): boolean => !!panelService.getPanels(side).length,
@@ -109,6 +115,9 @@ function ViewerLayout({
       // however, this might not be the only approach to set the loading indicator to false. we need to explore this further.
       () => {
         setShowLoadingIndicator(false);
+        // A hanging protocol was successfully applied, meaning display sets exist:
+        // clear the empty state in case it was shown for a previous load.
+        setShowNoDataOverlay(false);
       }
     );
 
@@ -116,6 +125,25 @@ function ViewerLayout({
       unsubscribe();
     };
   }, [hangingProtocolService]);
+
+  useEffect(() => {
+    const { unsubscribe } = DicomMetadataStore.subscribe(
+      DicomMetadataStore.EVENTS.STUDY_METADATA_EMPTY,
+      () => {
+        // No instance metadata was retrieved at all: close the loading
+        // indicator right away and show the empty state in the viewport grid
+        // area. Side panels keep loading normally. The hanging protocol will
+        // never run (no display sets), so without this the loading indicator
+        // would stay visible forever.
+        setShowLoadingIndicator(false);
+        setShowNoDataOverlay(true);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   const getViewportComponentData = viewportComponent => {
     const { entry } = getComponent(viewportComponent.namespace);
@@ -158,11 +186,13 @@ function ViewerLayout({
         appConfig={appConfig}
       />
       <div
-        className="relative flex w-full flex-row flex-nowrap items-stretch overflow-hidden bg-background"
+        className="bg-background relative flex w-full flex-row flex-nowrap items-stretch overflow-hidden"
         style={{ height: 'calc(100vh - 52px)' }}
       >
         <React.Fragment>
-          {showLoadingIndicator && <LoadingIndicatorProgress className="h-full w-full bg-background" />}
+          {showLoadingIndicator && (
+            <LoadingIndicatorProgress className="bg-background h-full w-full" />
+          )}
           <ResizablePanelGroup {...resizablePanelGroupProps}>
             {/* LEFT SIDEPANELS */}
             {hasLeftPanels ? (
@@ -186,14 +216,20 @@ function ViewerLayout({
             <ResizablePanel {...resizableViewportGridPanelProps}>
               <div className="flex h-full flex-1 flex-col">
                 <div
-                  className="relative flex h-full flex-1 items-center justify-center overflow-hidden bg-background"
+                  className="bg-background relative flex h-full flex-1 items-center justify-center overflow-hidden"
                   onMouseEnter={handleMouseEnter}
                 >
-                  <ViewportGridComp
-                    servicesManager={servicesManager}
-                    viewportComponents={viewportComponents}
-                    commandsManager={commandsManager}
-                  />
+                  {showNoDataOverlay ? (
+                    <p className="text-foreground text-xl font-light">
+                      {t('No image data available for this study')}
+                    </p>
+                  ) : (
+                    <ViewportGridComp
+                      servicesManager={servicesManager}
+                      viewportComponents={viewportComponents}
+                      commandsManager={commandsManager}
+                    />
+                  )}
                 </div>
               </div>
             </ResizablePanel>

@@ -73,5 +73,6 @@
   "of": "/ 共",
   "Showing": "显示",
   "Showing results": "显示结果",
-  "No results": "无结果"
+  "No results": "无结果",
+  "Cannot launch workflow: study has no studyInstanceUid": "无法启动工作流：检查缺少 studyInstanceUid"
 }

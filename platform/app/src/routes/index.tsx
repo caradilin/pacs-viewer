@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link, useNavigate } from 'react-router-dom';
 import { ErrorBoundary } from '@ohif/ui-next';
+import { useTranslation } from 'react-i18next';
 
 // Route Components
 // Study list variants are selected by the `workList.variant` customization:
@@ -38,26 +39,27 @@ NotFoundServer.propTypes = {
 const NotFoundStudy = () => {
   const [appConfig] = useAppConfig();
   const { showStudyList } = appConfig;
+  const { t } = useTranslation('Common');
 
   return (
     <div className="text-foreground absolute flex h-full w-full items-center justify-center">
       <div>
         <h4 data-cy="study-not-found-message">
-          One or more of the requested studies are not available at this time.
+          {t('One or more of the requested studies are not available at this time.')}
         </h4>
         {showStudyList && (
           <p
             className="mt-2"
             data-cy="return-to-study-list-message"
           >
-            Return to the{' '}
+            {t('Return to the')}{' '}
             <Link
               className="text-highlight"
               to="/"
             >
-              study list
+              {t('study list')}
             </Link>{' '}
-            to select a different study to view.
+            {t('to select a different study to view.')}
           </p>
         )}
       </div>

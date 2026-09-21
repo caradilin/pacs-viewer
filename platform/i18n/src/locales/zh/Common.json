@@ -100,5 +100,9 @@
   "This structured report is currently read-only because you are tracking measurements in another viewport.": "此结构化报告当前为只读状态，因为您正在另一个视口中跟踪测量值。",
   "Click {{loadStr}} to restore measurements.": "点击 {{loadStr}} 以恢复测量值。",
   "Read more...": "展开查看更多...",
-  "No image data available for this study": "该检查无影像数据"
+  "No image data available for this study": "该检查无影像数据",
+  "One or more of the requested studies are not available at this time.": "请求的一个或多个检查当前不可用。",
+  "Return to the": "返回",
+  "study list": "检查列表",
+  "to select a different study to view.": "以选择其他检查进行查看。"
 }
