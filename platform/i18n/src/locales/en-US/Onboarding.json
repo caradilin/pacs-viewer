@@ -21,6 +21,7 @@
   "Click the measurement in the measurement panel to jump to it.": "Click the measurement in the measurement panel to jump to it.",
   "Changing Layout": "Changing Layout",
   "You can change the layout of the viewer using the layout button.": "You can change the layout of the viewer using the layout button.",
+  "You can change the layout of the viewer using the layout button, including MPR for multi-planar views.": "You can change the layout of the viewer using the layout button, including MPR for multi-planar views.",
   "Selecting the MPR Layout": "Selecting the MPR Layout",
   "Select the MPR layout to view the images in MPR mode.": "Select the MPR layout to view the images in MPR mode.",
   "Skip all": "Skip all"

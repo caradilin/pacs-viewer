@@ -35,6 +35,7 @@ import DynamicVolume from './DynamicVolume.json';
 import Workflow from './Workflow.json';
 import WorkflowSteps from './WorkflowSteps.json';
 import USAnnotationPanel from './USAnnotationPanel.json';
+import Onboarding from './Onboarding.json';
 
 export default {
   zh: {
@@ -75,5 +76,6 @@ export default {
     Workflow,
     WorkflowSteps,
     USAnnotationPanel,
+    Onboarding,
   },
 };
