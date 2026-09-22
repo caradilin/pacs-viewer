@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router';
+import { useTranslation } from 'react-i18next';
 import { Enums, log } from '@ohif/core';
 import { Button } from '@ohif/ui-next';
 import { shallowEqualIgnoringArrayOrder } from '../utils/shallowEqualIgnoringArrayOrder';
@@ -36,6 +37,7 @@ export function useStudyListQuery({
 } {
   const location = useLocation();
   const params = useParams();
+  const { t } = useTranslation('Common');
 
   const [data, setData] = useState(DEFAULT_DATA);
   const [isLoading, setIsLoading] = useState(false);
@@ -84,12 +86,19 @@ export function useStudyListQuery({
         if (!configurationAPI) {
           const { uiModalService } = servicesManager.services;
           uiModalService.show({
-            title: 'Data Source Connection Error',
+            title: t('Data Source Connection Error'),
             content: () => (
               <div className="text-foreground">
-                <p className="text-red-600">Error: {(e as Error).message}</p>
+                <p className="text-red-600">
+                  {t('Error')}: {(e as Error).message}
+                </p>
                 <p>
-                  Please ensure the following data source is configured correctly or is running:
+                  {t(
+                    'Please ensure the following data source is configured correctly or is running:',
+                    {
+                      defaultValue: '请确保以下数据源已正确配置或正在运行：',
+                    }
+                  )}
                 </p>
                 <div className="mt-2 font-bold">{friendlyName}</div>
                 <div className="mt-4 flex justify-end">
@@ -99,7 +108,7 @@ export function useStudyListQuery({
                       refresh();
                     }}
                   >
-                    Retry
+                    {t('Retry')}
                   </Button>
                 </div>
               </div>
