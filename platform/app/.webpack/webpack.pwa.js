@@ -202,7 +202,24 @@ module.exports = (env, argv) => {
         // During e2e (COVERAGE=true) disable the dev-server overlay: its
         // injected iframe intercepts pointer events and breaks Playwright/Cypress
         // clicks. Keep it for normal local dev.
-        overlay: IS_COVERAGE ? false : { errors: true, warnings: false },
+        overlay: IS_COVERAGE
+          ? false
+          : {
+              errors: true,
+              warnings: false,
+              // Benign server-side data failures (e.g. WADO-RS 404 for missing
+              // frames) surface as unhandled rejections from inside
+              // cornerstone3D's image loader / dicomweb-client XHR, where OHIF
+              // code has no catch point. They are already logged and degraded
+              // gracefully, so keep them out of the blocking dev overlay.
+              runtimeErrors: error => {
+                const message = error?.message || '';
+                if (/Couldn't retrieve .* got status \d+/.test(message)) {
+                  return false;
+                }
+                return !/\[object XMLHttpRequest\]/.test(message);
+              },
+            },
       },
       proxy: [
         {

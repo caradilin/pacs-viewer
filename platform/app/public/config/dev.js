@@ -226,18 +226,28 @@ window.config = {
         wadoUriRoot: 'http://10.23.103.145:30102/dicomweb',
         qidoRoot: 'http://10.23.103.145:30102/dicomweb',
         wadoRoot: 'http://10.23.103.145:30102/dicomweb',
-        qidoSupportsIncludeField: true,
-        supportsReject: true,
-        dicomUploadEnabled: true,
+        qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
         thumbnailRendering: 'wadors',
+        thumbnailRequestStrategy: 'fetch',
         enableStudyLazyLoad: true,
-        supportsFuzzyMatching: true,
+        supportsFuzzyMatching: false,
         supportsWildcard: true,
-        omitQuotationForMultipartRequest: true,
+        staticWado: true,
+        singlepart: 'bulkdata,video,image',
+        stackRetrieveOptions: {
+          retrieveOptions: {
+            single: {
+              streaming: false,
+            },
+          },
+        },
         bulkDataURI: {
           enabled: true,
+          relativeResolution: 'studies',
+          transform: url => url.replace('/pixeldata.mp4', '/rendered'),
         },
+        omitQuotationForMultipartRequest: false,
       },
     },
 

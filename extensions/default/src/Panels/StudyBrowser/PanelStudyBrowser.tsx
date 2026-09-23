@@ -182,30 +182,34 @@ function PanelStudyBrowser({
     }
 
     currentDisplaySets.forEach(async dSet => {
-      const newImageSrcEntry = {};
-      const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
-      const imageIds = dataSource.getImageIdsForDisplaySet(dSet);
+      try {
+        const newImageSrcEntry = {};
+        const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
+        const imageIds = dataSource.getImageIdsForDisplaySet(dSet);
 
-      const imageId = getImageIdForThumbnail(displaySet, imageIds);
+        const imageId = getImageIdForThumbnail(displaySet, imageIds);
 
-      // TODO: Is it okay that imageIds are not returned here for SR displaySets?
-      if (displaySet?.unsupported) {
-        return;
-      }
-      // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-      let { thumbnailSrc } = displaySet;
-      if (!thumbnailSrc && displaySet.getThumbnailSrc) {
-        thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
-      }
-      if (!thumbnailSrc && imageId) {
-        const thumbnailSrc = await getImageSrc(imageId);
-        displaySet.thumbnailSrc = thumbnailSrc;
-      }
-      newImageSrcEntry[dSet.displaySetInstanceUID] = thumbnailSrc;
+        // TODO: Is it okay that imageIds are not returned here for SR displaySets?
+        if (displaySet?.unsupported) {
+          return;
+        }
+        // When the image arrives, render it and store the result in the thumbnailImgSrcMap
+        let { thumbnailSrc } = displaySet;
+        if (!thumbnailSrc && displaySet.getThumbnailSrc) {
+          thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
+        }
+        if (!thumbnailSrc && imageId) {
+          const thumbnailSrc = await getImageSrc(imageId);
+          displaySet.thumbnailSrc = thumbnailSrc;
+        }
+        newImageSrcEntry[dSet.displaySetInstanceUID] = thumbnailSrc;
 
-      setThumbnailImageSrcMap(prevState => {
-        return { ...prevState, ...newImageSrcEntry };
-      });
+        setThumbnailImageSrcMap(prevState => {
+          return { ...prevState, ...newImageSrcEntry };
+        });
+      } catch (error) {
+        console.warn('Failed to load thumbnail for display set', dSet.displaySetInstanceUID, error);
+      }
     });
   }, [displaySetService, dataSource, getImageSrc, activeViewportId, hasLoadedViewports]);
 
@@ -248,38 +252,46 @@ function PanelStudyBrowser({
         }
         const { displaySetsAdded, options } = data;
         displaySetsAdded.forEach(async dSet => {
-          const displaySetInstanceUID = dSet.displaySetInstanceUID;
-          const newImageSrcEntry = {};
-          const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
-          if (displaySet?.unsupported) {
-            return;
-          }
-          if (options?.madeInClient) {
-            setJumpToDisplaySet(displaySetInstanceUID);
-          }
+          try {
+            const displaySetInstanceUID = dSet.displaySetInstanceUID;
+            const newImageSrcEntry = {};
+            const displaySet = displaySetService.getDisplaySetByUID(displaySetInstanceUID);
+            if (displaySet?.unsupported) {
+              return;
+            }
+            if (options?.madeInClient) {
+              setJumpToDisplaySet(displaySetInstanceUID);
+            }
 
-          const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
-          const imageId = getImageIdForThumbnail(displaySet, imageIds);
+            const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
+            const imageId = getImageIdForThumbnail(displaySet, imageIds);
 
-          // TODO: Is it okay that imageIds are not returned here for SR displaysets?
-          if (!imageId) {
-            return;
-          }
+            // TODO: Is it okay that imageIds are not returned here for SR displaysets?
+            if (!imageId) {
+              return;
+            }
 
-          // When the image arrives, render it and store the result in the thumbnailImgSrcMap
-          let { thumbnailSrc } = displaySet;
-          if (!thumbnailSrc && displaySet.getThumbnailSrc) {
-            thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
-          }
-          if (!thumbnailSrc) {
-            thumbnailSrc = await getImageSrc(imageId);
-            displaySet.thumbnailSrc = thumbnailSrc;
-          }
-          newImageSrcEntry[displaySetInstanceUID] = thumbnailSrc;
+            // When the image arrives, render it and store the result in the thumbnailImgSrcMap
+            let { thumbnailSrc } = displaySet;
+            if (!thumbnailSrc && displaySet.getThumbnailSrc) {
+              thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
+            }
+            if (!thumbnailSrc) {
+              thumbnailSrc = await getImageSrc(imageId);
+              displaySet.thumbnailSrc = thumbnailSrc;
+            }
+            newImageSrcEntry[displaySetInstanceUID] = thumbnailSrc;
 
-          setThumbnailImageSrcMap(prevState => {
-            return { ...prevState, ...newImageSrcEntry };
-          });
+            setThumbnailImageSrcMap(prevState => {
+              return { ...prevState, ...newImageSrcEntry };
+            });
+          } catch (error) {
+            console.warn(
+              'Failed to load thumbnail for added display set',
+              dSet.displaySetInstanceUID,
+              error
+            );
+          }
         });
       }
     );

@@ -568,22 +568,29 @@ class CornerstoneViewportService
     this.viewportsById.set(viewportId, viewportInfo);
 
     const viewport = renderingEngine.getViewport(viewportId);
-    const displaySetPromise = this._setDisplaySets(
-      viewport,
-      viewportData,
-      viewportInfo,
-      presentations
-    );
+    let displaySetPromise: Promise<void>;
+    try {
+      displaySetPromise = this._setDisplaySets(viewport, viewportData, viewportInfo, presentations);
+    } catch (error) {
+      console.error(`Failed to set display sets for viewport ${viewportId}:`, error);
+      return;
+    }
 
     // The broadcast event here ensures that listeners have a valid, up to date
     // viewport to access.  Doing it too early can result in exceptions or
     // invalid data.
-    displaySetPromise.then(() => {
-      this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
-        viewportData,
-        viewportId,
+    displaySetPromise
+      .then(() => {
+        this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
+          viewportData,
+          viewportId,
+        });
+      })
+      .catch(error => {
+        // Image/volume load failures (e.g. WADO-RS 404) must not surface as
+        // unhandled rejections; the viewport stays on its placeholder state.
+        console.error(`Failed to load viewport data for viewport ${viewportId}:`, error);
       });
-    });
   }
 
   public getViewportOptions(viewportId: string): ViewportOptions {
@@ -1347,8 +1354,9 @@ class CornerstoneViewportService
 
     const applyRepresentation = () => {
       const { predecessorImageId } = displaySet;
-      const segmentationRepresentationPromise =
-        segmentationService.addSegmentationRepresentation(viewport.id, {
+      const segmentationRepresentationPromise = segmentationService.addSegmentationRepresentation(
+        viewport.id,
+        {
           segmentationId,
           predecessorImageId,
           type: representationType,
@@ -1358,7 +1366,8 @@ class CornerstoneViewportService
                 ? BlendModes.LABELMAP_EDGE_PROJECTION_BLEND
                 : undefined,
           },
-        });
+        }
+      );
       this.storePresentation({ viewportId: viewport.id });
       return segmentationRepresentationPromise;
     };
@@ -1426,8 +1435,7 @@ class CornerstoneViewportService
 
         // Stop waiting immediately if the SEG load itself fails — otherwise the
         // loading-complete event never fires and we would idle until the timeout.
-        const loadingPromise = (displaySet as { loadingPromise?: Promise<unknown> })
-          .loadingPromise;
+        const loadingPromise = (displaySet as { loadingPromise?: Promise<unknown> }).loadingPromise;
         loadingPromise?.catch(error => {
           if (settled) {
             return;
@@ -1486,12 +1494,13 @@ class CornerstoneViewportService
 
     // The camera snapshot/restore surface is forked per lane (legacy
     // getCamera/setCamera vs native view state), so the backend owns the re-mount.
-    const displaySetPromise = this.backend.remount(
-      viewport,
-      viewportData,
-      viewportInfo,
-      keepCamera
-    );
+    let displaySetPromise: Promise<void> | undefined;
+    try {
+      displaySetPromise = this.backend.remount(viewport, viewportData, viewportInfo, keepCamera);
+    } catch (error) {
+      console.error(`Failed to remount viewport ${viewportId}:`, error);
+      return;
+    }
 
     // remount() returns undefined for viewport families with no re-mount path
     // (matching legacy behavior); nothing changed, so skip the event broadcast.
@@ -1499,12 +1508,16 @@ class CornerstoneViewportService
       return;
     }
 
-    displaySetPromise.then(() => {
-      this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
-        viewportData,
-        viewportId,
+    displaySetPromise
+      .then(() => {
+        this._broadcastEvent(this.EVENTS.VIEWPORT_DATA_CHANGED, {
+          viewportData,
+          viewportId,
+        });
+      })
+      .catch(error => {
+        console.error(`Failed to update viewport ${viewportId}:`, error);
       });
-    });
   }
 
   _setDisplaySets(
