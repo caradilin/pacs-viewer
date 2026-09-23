@@ -228,7 +228,7 @@ window.config = {
         wadoRoot: 'http://10.23.103.145:30102/dicomweb',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
-        thumbnailRendering: 'wadors',
+        thumbnailRendering: 'thumbnail',
         thumbnailRequestStrategy: 'fetch',
         enableStudyLazyLoad: true,
         supportsFuzzyMatching: false,
@@ -245,9 +245,7 @@ window.config = {
         bulkDataURI: {
           enabled: true,
           relativeResolution: 'studies',
-          transform: url => url.replace('/pixeldata.mp4', '/rendered'),
         },
-        omitQuotationForMultipartRequest: false,
       },
     },
 
