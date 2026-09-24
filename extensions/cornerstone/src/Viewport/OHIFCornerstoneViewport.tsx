@@ -478,6 +478,18 @@ function areEqual(prevProps, nextProps) {
           return false;
         }
       }
+    } else {
+      if (foundDisplaySet.sopClass !== prevDisplaySet.sopClass) {
+        return false;
+      }
+
+      const prevSeriesUid = prevDisplaySet.seriesMetadata?.[0]?.SeriesInstanceUID;
+      const nextSeriesUid = foundDisplaySet.seriesMetadata?.[0]?.SeriesInstanceUID;
+      if (prevSeriesUid !== nextSeriesUid) {
+        return false;
+      }
+
+      return false;
     }
   }
 

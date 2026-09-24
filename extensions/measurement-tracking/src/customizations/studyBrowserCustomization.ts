@@ -1,4 +1,5 @@
 import { measurementTrackingMode } from '../contexts/TrackedMeasurementsContext/promptBeginTracking';
+import i18n from '@ohif/i18n';
 
 type CheckHasDirtyAndSimplifiedModeProps = {
   servicesManager: AppTypes.ServicesManager;
@@ -13,7 +14,25 @@ const onDoubleClickHandler = {
         const { hangingProtocolService, viewportGridService, uiNotificationService } =
           servicesManager.services;
         let updatedViewports = [];
-        const viewportId = activeViewportId;
+        let viewportId = activeViewportId;
+
+        if (!viewportId) {
+          const { viewports } = viewportGridService.getState();
+          viewportId = viewports.keys().next().value ?? null;
+        }
+
+        if (!viewportId) {
+          uiNotificationService.show({
+            title: i18n.t('StudyBrowser:Thumbnail Double Click'),
+            message: i18n.t(
+              'StudyBrowser:There is no active viewport to display the selected series.'
+            ),
+            type: 'info',
+            duration: 3000,
+          });
+          return;
+        }
+
         const haveDirtyMeasurementsInSimplifiedMode = checkHasDirtyAndSimplifiedMode({
           servicesManager,
           appConfig,
@@ -28,12 +47,18 @@ const onDoubleClickHandler = {
               isHangingProtocolLayout
             );
             viewportGridService.setDisplaySetsForViewports(updatedViewports);
+
+            if (!activeViewportId) {
+              viewportGridService.setActiveViewportId(viewportId);
+            }
           }
         } catch (error) {
           console.warn(error);
           uiNotificationService.show({
-            title: 'Thumbnail Double Click',
-            message: 'The selected display sets could not be added to the viewport.',
+            title: i18n.t('StudyBrowser:Thumbnail Double Click'),
+            message: i18n.t(
+              'StudyBrowser:The selected display sets could not be added to the viewport.'
+            ),
             type: 'error',
             duration: 3000,
           });

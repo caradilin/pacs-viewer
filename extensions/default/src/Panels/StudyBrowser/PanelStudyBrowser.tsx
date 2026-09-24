@@ -193,13 +193,22 @@ function PanelStudyBrowser({
         if (displaySet?.unsupported) {
           return;
         }
+
+        const previousImageCount = dSet.images?.length || 0;
+        const currentImageCount = imageIds.length;
+        const hasImagesChanged = previousImageCount !== currentImageCount;
+
+        if (hasImagesChanged && currentImageCount > 0) {
+          displaySet.thumbnailSrc = undefined; // Clear cached null/undefined
+        }
+
         // When the image arrives, render it and store the result in the thumbnailImgSrcMap
         let { thumbnailSrc } = displaySet;
         if (!thumbnailSrc && displaySet.getThumbnailSrc) {
           thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
         }
         if (!thumbnailSrc && imageId) {
-          const thumbnailSrc = await getImageSrc(imageId);
+          thumbnailSrc = await getImageSrc(imageId);
           displaySet.thumbnailSrc = thumbnailSrc;
         }
         newImageSrcEntry[dSet.displaySetInstanceUID] = thumbnailSrc;
@@ -319,6 +328,52 @@ function PanelStudyBrowser({
         }
 
         setDisplaySets(mappedDisplaySets);
+
+        // Try to load thumbnails for changed display sets
+        changedDisplaySets.forEach(async dSet => {
+          try {
+            const displaySet = displaySetService.getDisplaySetByUID(dSet.displaySetInstanceUID);
+            if (displaySet?.unsupported || !displaySet) {
+              return;
+            }
+
+            const imageIds = dataSource.getImageIdsForDisplaySet(displaySet);
+
+            // Check if images were added/changed (e.g., switching from REG to CT)
+            const previousImageCount = dSet.images?.length || 0;
+            const currentImageCount = imageIds.length;
+            const hasImagesChanged = previousImageCount !== currentImageCount;
+
+            if (hasImagesChanged && currentImageCount > 0) {
+              displaySet.thumbnailSrc = undefined;
+            }
+
+            const imageId = getImageIdForThumbnail(displaySet, imageIds);
+            if (!imageId) {
+              return;
+            }
+
+            let { thumbnailSrc } = displaySet;
+            if (!thumbnailSrc && displaySet.getThumbnailSrc) {
+              thumbnailSrc = await displaySet.getThumbnailSrc({ getImageSrc });
+            }
+            if (!thumbnailSrc) {
+              thumbnailSrc = await getImageSrc(imageId);
+              displaySet.thumbnailSrc = thumbnailSrc;
+            }
+
+            setThumbnailImageSrcMap(prevState => ({
+              ...prevState,
+              [dSet.displaySetInstanceUID]: thumbnailSrc,
+            }));
+          } catch (error) {
+            console.warn(
+              'Failed to load thumbnail for changed display set',
+              dSet.displaySetInstanceUID,
+              error
+            );
+          }
+        });
       }
     );
 
