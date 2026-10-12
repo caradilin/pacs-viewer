@@ -223,9 +223,9 @@ window.config = {
       configuration: {
         friendlyName: '本地 DICOMweb 服务器（30102）',
         name: 'DCM4CHEE',
-        wadoUriRoot: 'http://10.23.103.145:30102/dicomweb',
-        qidoRoot: 'http://10.23.103.145:30102/dicomweb',
-        wadoRoot: 'http://10.23.103.145:30102/dicomweb',
+        wadoUriRoot: 'http://10.1.7.251:30102/dicomweb',
+        qidoRoot: 'http://10.1.7.251:30102/dicomweb',
+        wadoRoot: 'http://10.1.7.251:30102/dicomweb',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
         thumbnailRendering: 'thumbnail',
