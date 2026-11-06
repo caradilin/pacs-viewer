@@ -82,11 +82,11 @@ window.config = {
       namespace: '@ohif/extension-default.dataSourcesModule.dicomweb',
       sourceName: 'ohif',
       configuration: {
-        friendlyName: 'AWS S3 Static wado server',
-        name: 'aws',
-        wadoUriRoot: 'https://d14fa38qiwhyfd.cloudfront.net/dicomweb',
-        qidoRoot: 'https://d14fa38qiwhyfd.cloudfront.net/dicomweb',
-        wadoRoot: 'https://d14fa38qiwhyfd.cloudfront.net/dicomweb',
+        friendlyName: '本地 DICOMweb 服务器',
+        name: 'DCM4CHEE',
+        wadoUriRoot: 'http://10.4.0.21:30001/dicomweb',
+        qidoRoot: 'http://10.4.0.21:30001/dicomweb',
+        wadoRoot: 'http://10.4.0.21:30001/dicomweb',
         qidoSupportsIncludeField: false,
         imageRendering: 'wadors',
         thumbnailRendering: 'thumbnail',
@@ -95,18 +95,18 @@ window.config = {
         supportsFuzzyMatching: false,
         supportsWildcard: true,
         staticWado: true,
-        // Multiframe SEG loads fetch the whole instance as a single Part 10
-        // object by default and wait for it: the per-frame endpoint is
-        // efficient, but SEG frames are so small and numerous that one bulk
-        // fetch beats hundreds of tiny requests. Per-frame loading is the
-        // exception — set loadMultiframeAsPart10: false here to force it.
-        singlepart: 'bulkdata,video',
+        singlepart: 'bulkdata,video,image',
+        stackRetrieveOptions: {
+          retrieveOptions: {
+            single: {
+              streaming: false,
+            },
+          },
+        },
         bulkDataURI: {
           enabled: true,
           relativeResolution: 'studies',
-          transform: url => url.replace('/pixeldata.mp4', '/rendered'),
         },
-        omitQuotationForMultipartRequest: true,
       },
     },
 
